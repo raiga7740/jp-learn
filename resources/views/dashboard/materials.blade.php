@@ -220,6 +220,18 @@
 
                             <h3>{{ $material->title }}</h3>
                             <p>{{ $material->description }}</p>
+                            <div class="material-meta">
+                                <a href="{{ route('flashcards.show', $material->slug) }}" style="color:var(--red); font-size:12px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                                    Mode Flashcard
+                                </a>
+                                @if(in_array($material->category, ['hiragana', 'katakana', 'kanji']))
+                                <a href="{{ route('writing.index') }}" style="color:#5a4a58; font-size:12px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px; margin-left:10px;">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path></svg>
+                                    Latihan Menulis
+                                </a>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="material-progress">

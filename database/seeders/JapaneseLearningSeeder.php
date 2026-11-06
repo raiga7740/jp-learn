@@ -603,16 +603,17 @@ class JapaneseLearningSeeder extends Seeder
             ]
         );
 
-        // ── 6. QUIZZES ────────────────────────────────────────────────────────
+        // ── 6. QUIZZES & LATIHAN (LENGKAP 5 MODUL — 95 SOAL) ─────────────────
 
+        // Quiz 1: Hiragana Lengkap (20 Soal)
         $quiz1 = Quiz::updateOrCreate(
             ['material_id' => $hiragana->id],
             [
                 'title'       => 'Quiz Hiragana Lengkap',
                 'category'    => 'hiragana',
                 'level'       => 'beginner',
-                'description' => 'Uji kemampuan kamu mengenali seluruh variasi huruf Hiragana dasar dan Dakuon.',
-                'time_limit'  => 180,
+                'description' => 'Uji kemampuan kamu mengenali seluruh variasi huruf Hiragana dasar (Gojūon) dan Dakuon/Handakuon.',
+                'time_limit'  => 240,
             ]
         );
 
@@ -627,14 +628,18 @@ class JapaneseLearningSeeder extends Seeder
             ['jp' => 'く', 'correct' => 'ku',  'opts' => ['ko', 'ka', 'ku', 'ki']],
             ['jp' => 'さ', 'correct' => 'sa',  'opts' => ['shi', 'sa', 'su', 'so']],
             ['jp' => 'し', 'correct' => 'shi', 'opts' => ['si', 'shi', 'su', 'sa']],
+            ['jp' => 'す', 'correct' => 'su',  'opts' => ['su', 'so', 'se', 'sa']],
             ['jp' => 'た', 'correct' => 'ta',  'opts' => ['ta', 'chi', 'tsu', 'to']],
+            ['jp' => 'ち', 'correct' => 'chi', 'opts' => ['chi', 'ta', 'tsu', 'te']],
+            ['jp' => 'つ', 'correct' => 'tsu', 'opts' => ['tsu', 'chi', 'te', 'to']],
             ['jp' => 'な', 'correct' => 'na',  'opts' => ['ne', 'nu', 'na', 'no']],
             ['jp' => 'は', 'correct' => 'ha',  'opts' => ['ha', 'hi', 'fu', 'he']],
             ['jp' => 'ま', 'correct' => 'ma',  'opts' => ['mi', 'mu', 'ma', 'mo']],
             ['jp' => 'ら', 'correct' => 'ra',  'opts' => ['ra', 'ri', 'ru', 're']],
+            ['jp' => 'が', 'correct' => 'ga',  'opts' => ['ga', 'gi', 'gu', 'ge']],
+            ['jp' => 'ぱ', 'correct' => 'pa',  'opts' => ['pa', 'pi', 'pu', 'pe']],
         ];
 
-        // Hapus pertanyaan lama untuk quiz ini agar tidak terduplikasi saat re-seed
         QuizQuestion::where('quiz_id', $quiz1->id)->delete();
         foreach ($hiraganaQuestions as $i => $q) {
             QuizQuestion::create([
@@ -648,14 +653,63 @@ class JapaneseLearningSeeder extends Seeder
             ]);
         }
 
+        // Quiz 2: Katakana Lengkap (20 Soal)
         $quiz2 = Quiz::updateOrCreate(
+            ['material_id' => $katakana->id],
+            [
+                'title'       => 'Quiz Katakana Lengkap',
+                'category'    => 'katakana',
+                'level'       => 'beginner',
+                'description' => 'Uji pemahaman membaca huruf Katakana dasar (Gojūon) dan kata serapan bahasa asing.',
+                'time_limit'  => 240,
+            ]
+        );
+
+        $katakanaQuestions = [
+            ['jp' => 'ア', 'correct' => 'a',   'opts' => ['a', 'i', 'u', 'e']],
+            ['jp' => 'イ', 'correct' => 'i',   'opts' => ['a', 'i', 'o', 'e']],
+            ['jp' => 'ウ', 'correct' => 'u',   'opts' => ['o', 'a', 'u', 'e']],
+            ['jp' => 'エ', 'correct' => 'e',   'opts' => ['i', 'e', 'o', 'u']],
+            ['jp' => 'オ', 'correct' => 'o',   'opts' => ['a', 'i', 'e', 'o']],
+            ['jp' => 'カ', 'correct' => 'ka',  'opts' => ['ki', 'ka', 'ku', 'ko']],
+            ['jp' => 'キ', 'correct' => 'ki',  'opts' => ['ki', 'ka', 'ke', 'ko']],
+            ['jp' => 'サ', 'correct' => 'sa',  'opts' => ['shi', 'sa', 'su', 'so']],
+            ['jp' => 'シ', 'correct' => 'shi', 'opts' => ['shi', 'tsu', 'so', 'n']],
+            ['jp' => 'ス', 'correct' => 'su',  'opts' => ['su', 'se', 'so', 'sa']],
+            ['jp' => 'タ', 'correct' => 'ta',  'opts' => ['ta', 'chi', 'tsu', 'te']],
+            ['jp' => 'チ', 'correct' => 'chi', 'opts' => ['chi', 'te', 'to', 'ta']],
+            ['jp' => 'ツ', 'correct' => 'tsu', 'opts' => ['tsu', 'shi', 'so', 'n']],
+            ['jp' => 'ナ', 'correct' => 'na',  'opts' => ['na', 'ni', 'nu', 'ne']],
+            ['jp' => 'ハ', 'correct' => 'ha',  'opts' => ['ha', 'hi', 'fu', 'he']],
+            ['jp' => 'マ', 'correct' => 'ma',  'opts' => ['ma', 'mi', 'mu', 'me']],
+            ['jp' => 'ラ', 'correct' => 'ra',  'opts' => ['ra', 'ri', 'ru', 're']],
+            ['jp' => 'ガ', 'correct' => 'ga',  'opts' => ['ga', 'gi', 'gu', 'ge']],
+            ['jp' => 'パン', 'correct' => 'Roti', 'opts' => ['Roti', 'Susu', 'Daging', 'Nasi']],
+            ['jp' => 'コーヒー', 'correct' => 'Kopi', 'opts' => ['Kopi', 'Teh', 'Jus', 'Cokelat']],
+        ];
+
+        QuizQuestion::where('quiz_id', $quiz2->id)->delete();
+        foreach ($katakanaQuestions as $i => $q) {
+            QuizQuestion::create([
+                'quiz_id'        => $quiz2->id,
+                'type'           => 'multiple_choice',
+                'question'       => 'Apa bacaan / arti huruf Katakana ini?',
+                'question_jp'    => $q['jp'],
+                'options'        => $q['opts'],
+                'correct_answer' => $q['correct'],
+                'order'          => $i + 1,
+            ]);
+        }
+
+        // Quiz 3: Kosakata Sehari-hari (20 Soal)
+        $quiz3 = Quiz::updateOrCreate(
             ['material_id' => $vocab->id],
             [
                 'title'       => 'Quiz Kosakata Sehari-hari',
                 'category'    => 'vocabulary',
                 'level'       => 'beginner',
-                'description' => 'Uji pemahamanmu tentang kosakata dasar sehari-hari bahasa Jepang.',
-                'time_limit'  => 240,
+                'description' => 'Latihan komprehensif kosakata JLPT N5: salam, sapaan, orang, benda, waktu, dan kata kerja.',
+                'time_limit'  => 300,
             ]
         );
 
@@ -665,15 +719,27 @@ class JapaneseLearningSeeder extends Seeder
             ['q' => 'Apa arti dari "すみません"?', 'correct' => 'Permisi / Maaf', 'opts' => ['Terima kasih', 'Permisi / Maaf', 'Selamat malam', 'Ya']],
             ['q' => 'Apa arti dari "いいえ"?', 'correct' => 'Tidak / Bukan', 'opts' => ['Ya', 'Tidak / Bukan', 'Mungkin', 'Tolong']],
             ['q' => 'Apa arti dari "こんばんは"?', 'correct' => 'Selamat malam', 'opts' => ['Selamat pagi', 'Selamat siang', 'Selamat malam', 'Selamat tinggal']],
-            ['q' => 'Apa arti dari "がくせい"?', 'correct' => 'Pelajar / Mahasiswa', 'opts' => ['Guru', 'Pelajar / Mahasiswa', 'Dokter', 'Teman']],
-            ['q' => 'Apa arti dari "たべます"?', 'correct' => 'Makan', 'opts' => ['Minum', 'Makan', 'Tidur', 'Pergi']],
-            ['q' => 'Apa arti dari "ほん"?', 'correct' => 'Buku', 'opts' => ['Buku', 'Mobil', 'Rumah', 'Stasiun']],
+            ['q' => 'Bagaimana cara mengucapkan "Selamat siang / Halo"?', 'correct' => 'こんにちは', 'opts' => ['おはよう', 'こんにちは', 'こんばんは', 'さようなら']],
+            ['q' => 'Apa arti dari ungkapan "さようなら"?', 'correct' => 'Selamat tinggal', 'opts' => ['Halo', 'Selamat tinggal', 'Sampai nanti', 'Selamat siang']],
+            ['q' => 'Apa arti dari ungkapan "ごめんなさい"?', 'correct' => 'Mohon maaf', 'opts' => ['Terima kasih', 'Mohon maaf', 'Silakan', 'Sama-sama']],
+            ['q' => 'Apa arti dari kata ganti "わたし"?', 'correct' => 'Saya / Aku', 'opts' => ['Saya / Aku', 'Kamu', 'Dia', 'Mereka']],
+            ['q' => 'Apa arti dari kata "せんせい"?', 'correct' => 'Guru / Pengajar', 'opts' => ['Guru / Pengajar', 'Murid', 'Dokter', 'Karyawan']],
+            ['q' => 'Apa arti dari kata "がくせい"?', 'correct' => 'Pelajar / Mahasiswa', 'opts' => ['Guru', 'Pelajar / Mahasiswa', 'Teman', 'Dokter']],
+            ['q' => 'Apa arti dari kata "ともだち"?', 'correct' => 'Teman / Kawan', 'opts' => ['Teman / Kawan', 'Keluarga', 'Musuh', 'Tetangga']],
+            ['q' => 'Apa arti dari benda "ほん"?', 'correct' => 'Buku', 'opts' => ['Buku', 'Mobil', 'Rumah', 'Stasiun']],
+            ['q' => 'Apa arti dari kata "くるま"?', 'correct' => 'Mobil', 'opts' => ['Mobil', 'Sepeda', 'Kereta', 'Pesawat']],
+            ['q' => 'Apa arti dari kata "みず"?', 'correct' => 'Air putih', 'opts' => ['Air putih', 'Teh', 'Kopi', 'Susu']],
+            ['q' => 'Apa arti dari kata "ごはん"?', 'correct' => 'Nasi / Makanan', 'opts' => ['Nasi / Makanan', 'Roti', 'Buah', 'Air']],
+            ['q' => 'Apa arti dari tempat "がっこう"?', 'correct' => 'Sekolah', 'opts' => ['Sekolah', 'Rumah sakit', 'Toko', 'Stasiun']],
+            ['q' => 'Apa arti dari keterangan waktu "きょう"?', 'correct' => 'Hari ini', 'opts' => ['Hari ini', 'Besok', 'Kemarin', 'Lusa']],
+            ['q' => 'Apa arti dari kata kerja "たべます"?', 'correct' => 'Makan', 'opts' => ['Minum', 'Makan', 'Tidur', 'Pergi']],
+            ['q' => 'Apa arti dari kata kerja "のみます"?', 'correct' => 'Minum', 'opts' => ['Makan', 'Minum', 'Belajar', 'Tidur']],
         ];
 
-        QuizQuestion::where('quiz_id', $quiz2->id)->delete();
+        QuizQuestion::where('quiz_id', $quiz3->id)->delete();
         foreach ($vocabQuestions as $i => $q) {
             QuizQuestion::create([
-                'quiz_id'        => $quiz2->id,
+                'quiz_id'        => $quiz3->id,
                 'type'           => 'multiple_choice',
                 'question'       => $q['q'],
                 'options'        => $q['opts'],
@@ -682,33 +748,150 @@ class JapaneseLearningSeeder extends Seeder
             ]);
         }
 
-        $quiz3 = Quiz::updateOrCreate(
+        // Quiz 4: Kanji N5 Lengkap (20 Soal)
+        $quiz4 = Quiz::updateOrCreate(
             ['material_id' => $kanji->id],
             [
-                'title'       => 'Quiz Kanji N5',
+                'title'       => 'Quiz Kanji N5 Lengkap',
                 'category'    => 'kanji',
                 'level'       => 'beginner',
-                'description' => 'Kenali kanji-kanji dasar hari, alam, dan pendidikan.',
+                'description' => 'Uji penguasaan kanji N5: angka, waktu/kalender, unsur alam, orang, arah, kata sifat, dan kata kerja.',
                 'time_limit'  => 300,
             ]
         );
 
         $kanjiQuestions = [
-            ['jp' => '日', 'correct' => 'Matahari / Hari', 'opts' => ['Matahari / Hari', 'Bulan', 'Api', 'Air']],
-            ['jp' => '月', 'correct' => 'Bulan',           'opts' => ['Emas', 'Bulan', 'Pohon', 'Orang']],
-            ['jp' => '火', 'correct' => 'Api',             'opts' => ['Air', 'Api', 'Tanah', 'Kayu']],
-            ['jp' => '水', 'correct' => 'Air',             'opts' => ['Api', 'Emas', 'Air', 'Bulan']],
-            ['jp' => '人', 'correct' => 'Orang',           'opts' => ['Tanah', 'Orang', 'Api', 'Air']],
-            ['jp' => '学', 'correct' => 'Belajar / Ilmu',  'opts' => ['Sekolah', 'Buku', 'Belajar / Ilmu', 'Matahari']],
+            ['jp' => '日', 'correct' => 'Matahari / Hari',       'opts' => ['Matahari / Hari', 'Bulan', 'Api', 'Air']],
+            ['jp' => '月', 'correct' => 'Bulan',                 'opts' => ['Emas', 'Bulan', 'Pohon', 'Orang']],
+            ['jp' => '火', 'correct' => 'Api',                   'opts' => ['Air', 'Api', 'Tanah', 'Kayu']],
+            ['jp' => '水', 'correct' => 'Air',                   'opts' => ['Api', 'Emas', 'Air', 'Bulan']],
+            ['jp' => '木', 'correct' => 'Pohon / Kayu',         'opts' => ['Tanah', 'Pohon / Kayu', 'Api', 'Air']],
+            ['jp' => '金', 'correct' => 'Emas / Uang',          'opts' => ['Emas / Uang', 'Perak', 'Besi', 'Batu']],
+            ['jp' => '土', 'correct' => 'Tanah',                 'opts' => ['Tanah', 'Api', 'Air', 'Gunung']],
+            ['jp' => '山', 'correct' => 'Gunung',                'opts' => ['Gunung', 'Sungai', 'Laut', 'Hutan']],
+            ['jp' => '川', 'correct' => 'Sungai',                'opts' => ['Sungai', 'Danau', 'Gunung', 'Hujan']],
+            ['jp' => '人', 'correct' => 'Orang / Manusia',       'opts' => ['Tanah', 'Orang / Manusia', 'Api', 'Air']],
+            ['jp' => '男', 'correct' => 'Pria / Laki-laki',     'opts' => ['Pria / Laki-laki', 'Wanita', 'Anak', 'Teman']],
+            ['jp' => '女', 'correct' => 'Wanita / Perempuan',   'opts' => ['Wanita / Perempuan', 'Pria', 'Ibu', 'Saudara']],
+            ['jp' => '目', 'correct' => 'Mata',                  'opts' => ['Mata', 'Telinga', 'Mulut', 'Tangan']],
+            ['jp' => '口', 'correct' => 'Mulut',                 'opts' => ['Mulut', 'Mata', 'Kaki', 'Hidung']],
+            ['jp' => '手', 'correct' => 'Tangan',                'opts' => ['Tangan', 'Kaki', 'Kepala', 'Punggung']],
+            ['jp' => '上', 'correct' => 'Atas / Naik',          'opts' => ['Atas / Naik', 'Bawah', 'Kiri', 'Kanan']],
+            ['jp' => '下', 'correct' => 'Bawah / Turun',        'opts' => ['Bawah / Turun', 'Atas', 'Tengah', 'Luar']],
+            ['jp' => '大', 'correct' => 'Besar',                 'opts' => ['Besar', 'Kecil', 'Tinggi', 'Murah']],
+            ['jp' => '小', 'correct' => 'Kecil',                 'opts' => ['Kecil', 'Besar', 'Sedikit', 'Banyak']],
+            ['jp' => '食', 'correct' => 'Makan',                 'opts' => ['Makan', 'Minum', 'Pergi', 'Melihat']],
         ];
 
-        QuizQuestion::where('quiz_id', $quiz3->id)->delete();
+        QuizQuestion::where('quiz_id', $quiz4->id)->delete();
         foreach ($kanjiQuestions as $i => $q) {
             QuizQuestion::create([
-                'quiz_id'        => $quiz3->id,
+                'quiz_id'        => $quiz4->id,
                 'type'           => 'multiple_choice',
                 'question'       => 'Apa arti kanji berikut?',
                 'question_jp'    => $q['jp'],
+                'options'        => $q['opts'],
+                'correct_answer' => $q['correct'],
+                'order'          => $i + 1,
+            ]);
+        }
+
+        // Quiz 5: Pola Kalimat & Tata Bahasa N5 (15 Soal)
+        $quiz5 = Quiz::updateOrCreate(
+            ['material_id' => $grammar->id],
+            [
+                'title'       => 'Quiz Pola Kalimat & Tata Bahasa N5',
+                'category'    => 'grammar',
+                'level'       => 'beginner',
+                'description' => 'Uji pemahaman pola kalimat dasar N5: partikel は, を, の, へ, で, bentuk negatif, dan kalimat tanya.',
+                'time_limit'  => 300,
+            ]
+        );
+
+        $grammarQuestions = [
+            [
+                'q'       => 'Partikel penanda topik kalimat dalam "わたし ___ がくせいです" adalah:',
+                'correct' => 'は (wa)',
+                'opts'    => ['は (wa)', 'が (ga)', 'を (o)', 'に (ni)'],
+            ],
+            [
+                'q'       => 'Bentuk negatif sopan dari "です" (desu) adalah:',
+                'correct' => 'ではありません (dewa arimasen)',
+                'opts'    => ['ではありません (dewa arimasen)', 'でした (deshita)', 'ます (masu)', 'ません (masen)'],
+            ],
+            [
+                'q'       => 'Partikel untuk mengubah kalimat pernyataan menjadi kalimat tanya di akhir kalimat adalah:',
+                'correct' => 'か (ka)',
+                'opts'    => ['か (ka)', 'ね (ne)', 'よ (yo)', 'の (no)'],
+            ],
+            [
+                'q'       => 'Kata tunjuk benda yang berada dekat dengan pembicara adalah:',
+                'correct' => 'これ (kore)',
+                'opts'    => ['これ (kore)', 'それ (sore)', 'あれ (are)', 'どれ (dore)'],
+            ],
+            [
+                'q'       => 'Kata tunjuk benda yang berada dekat dengan lawan bicara adalah:',
+                'correct' => 'それ (sore)',
+                'opts'    => ['これ (kore)', 'それ (sore)', 'あれ (are)', 'どれ (dore)'],
+            ],
+            [
+                'q'       => 'Kata tunjuk benda yang berada jauh dari pembicara dan lawan bicara adalah:',
+                'correct' => 'あれ (are)',
+                'opts'    => ['これ (kore)', 'それ (sore)', 'あれ (are)', 'どれ (dore)'],
+            ],
+            [
+                'q'       => 'Kata tunjuk tempat untuk menunjukkan "di sini" (dekat pembicara) adalah:',
+                'correct' => 'ここ (koko)',
+                'opts'    => ['ここ (koko)', 'そこ (soko)', 'あそこ (asoko)', 'どこ (doko)'],
+            ],
+            [
+                'q'       => 'Partikel yang digunakan untuk menyatakan kepemilikan seperti "buku saya" (わたし ___ ほん) adalah:',
+                'correct' => 'の (no)',
+                'opts'    => ['の (no)', 'は (wa)', 'を (o)', 'と (to)'],
+            ],
+            [
+                'q'       => 'Partikel penanda objek penderita langsung dalam kalimat "ごはん ___ たべます" adalah:',
+                'correct' => 'を (o)',
+                'opts'    => ['を (o)', 'が (ga)', 'は (wa)', 'で (de)'],
+            ],
+            [
+                'q'       => 'Partikel penanda tempat tujuan dalam kalimat "がっこう ___ いきます" adalah:',
+                'correct' => 'へ (e) / に (ni)',
+                'opts'    => ['へ (e) / に (ni)', 'で (de)', 'を (o)', 'から (kara)'],
+            ],
+            [
+                'q'       => 'Partikel penanda tempat terjadinya aktivitas dalam "いえ ___ べんきょうします" adalah:',
+                'correct' => 'で (de)',
+                'opts'    => ['で (de)', 'に (ni)', 'へ (e)', 'を (o)'],
+            ],
+            [
+                'q'       => 'Terjemahan bahasa Jepang yang tepat untuk "Ini adalah kamus":',
+                'correct' => 'これはじしょです',
+                'opts'    => ['これはじしょです', 'それはじしょです', 'あれはじしょです', 'どれはじしょですか'],
+            ],
+            [
+                'q'       => 'Terjemahan yang tepat untuk "Saya bukan dokter":',
+                'correct' => 'わたしはいしゃではありません',
+                'opts'    => ['わたしはいしゃではありません', 'わたしはいしゃです', 'わたしはいしゃでした', 'わたしはいしゃですか'],
+            ],
+            [
+                'q'       => 'Terjemahan yang tepat untuk kalimat tanya "Apakah kamu orang Jepang?":',
+                'correct' => 'あなたはにほんじんですか',
+                'opts'    => ['あなたはにほんじんですか', 'わたしはにほんじんです', 'かれはにほんじんですか', 'あなたはにほんじんでした'],
+            ],
+            [
+                'q'       => 'Terjemahan bahasa Jepang yang tepat untuk "Minum air":',
+                'correct' => 'みずをのみます',
+                'opts'    => ['みずをのみます', 'みずがたべます', 'みずへいきます', 'みずでのみます'],
+            ],
+        ];
+
+        QuizQuestion::where('quiz_id', $quiz5->id)->delete();
+        foreach ($grammarQuestions as $i => $q) {
+            QuizQuestion::create([
+                'quiz_id'        => $quiz5->id,
+                'type'           => 'multiple_choice',
+                'question'       => $q['q'],
                 'options'        => $q['opts'],
                 'correct_answer' => $q['correct'],
                 'order'          => $i + 1,

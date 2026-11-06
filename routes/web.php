@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FlashcardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WritingPracticeController;
 
 // Landing
 Route::get('/', function () {
@@ -28,6 +30,9 @@ Route::middleware('auth')->group(function () {
 
     // Learning sections
     Route::get('/materi', [DashboardController::class, 'materials'])->name('dashboard.materials');
+    Route::get('/latihan-menulis', [WritingPracticeController::class, 'index'])->name('writing.index');
+    Route::get('/flashcards', [FlashcardController::class, 'index'])->name('flashcards.index');
+    Route::get('/flashcards/{material:slug}', [FlashcardController::class, 'show'])->name('flashcards.show');
     Route::get('/quiz', [DashboardController::class, 'quizzes'])->name('dashboard.quizzes');
     Route::get('/progress', [DashboardController::class, 'progress'])->name('dashboard.progress');
 

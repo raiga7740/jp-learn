@@ -35,7 +35,7 @@
 
     .overview {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
         gap: 16px;
     }
     .overview-card {
@@ -182,6 +182,44 @@
             <p>Pelajari Hiragana, Katakana, Kanji dasar, kosakata penting, dan pola tata bahasa secara terstruktur.</p>
             <a class="button" href="{{ route('dashboard.materials') }}">
                 Buka Materi
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </article>
+
+        <article class="overview-card">
+            <span class="symbol" style="background: rgba(224, 86, 36, 0.12); color: #e05624;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+            </span>
+            <h2>Mode Flashcard</h2>
+            <p>Hafalkan huruf Kana, Kanji N5, dan kosakata lebih cepat dengan kartu bolak-balik interaktif dan audio.</p>
+            <a class="button" href="{{ route('flashcards.index') }}">
+                Mulai Flashcard
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </article>
+
+        <article class="overview-card">
+            <span class="symbol" style="background: rgba(142, 68, 173, 0.12); color: #8e44ad;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                    <path d="M2 2l7.586 7.586"></path>
+                    <circle cx="11" cy="11" r="2"></circle>
+                </svg>
+            </span>
+            <h2>Latihan Menulis</h2>
+            <p>Asah ketrampilan menulis goresan Hiragana, Katakana, dan Kanji secara interaktif langsung di kanvas digital.</p>
+            <a class="button" href="{{ route('writing.index') }}">
+                Mulai Menulis
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>

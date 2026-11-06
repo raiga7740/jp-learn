@@ -488,6 +488,16 @@
         @endif
     </div>
     <div class="action-btns">
+        @if(in_array($material->category, ['hiragana', 'katakana', 'kanji']))
+        <a href="{{ route('writing.index') }}" class="btn btn-ghost" title="Latih goresan menulis karakter">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path></svg>
+            Latihan Menulis
+        </a>
+        @endif
+        <a href="{{ route('flashcards.show', $material->slug) }}" class="btn btn-ghost" title="Latih hafalan dengan kartu flashcard">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+            Mode Flashcard
+        </a>
         @if($quiz)
         <a href="{{ route('quiz.show', $quiz->id) }}" class="btn btn-ghost">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
