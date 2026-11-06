@@ -497,9 +497,19 @@
             <span class="session-title">{{ $material->title }}</span>
             <span class="badge blue">{{ strtoupper($material->level) }}</span>
             @if(($filterMode ?? 'all') === 'due')
-                <span class="badge" style="background:#ffe8cc; color:#d9480f;">⚡ Kartu Jatuh Tempo</span>
+                <span class="badge" style="display:inline-flex; align-items:center; gap:5px; background:#ffe8cc; color:#d9480f;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    Kartu Jatuh Tempo
+                </span>
             @elseif(($filterMode ?? 'all') === 'daily_review')
-                <span class="badge" style="background:#e6fcf5; color:#0ca678;">🌟 Review Harian</span>
+                <span class="badge" style="display:inline-flex; align-items:center; gap:5px; background:#e6fcf5; color:#0ca678;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                    Review Harian
+                </span>
             @endif
         </div>
 
@@ -1030,7 +1040,7 @@
                     toggleShuffleBtn.classList.toggle('active', isShuffled);
                     if (isShuffled) {
                         queue = shuffle(queue);
-                        shuffleLabel.textContent = 'Diacak ✓';
+                        shuffleLabel.textContent = 'Diacak';
                     } else {
                         shuffleLabel.textContent = 'Acak';
                     }

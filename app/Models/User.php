@@ -49,4 +49,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserVocabulary::class);
     }
+
+    public function jlptExamResults(): HasMany
+    {
+        return $this->hasMany(JlptExamResult::class);
+    }
 }

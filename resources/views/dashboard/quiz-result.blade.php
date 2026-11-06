@@ -472,8 +472,14 @@
                 <!-- Filter Tabs -->
                 <div class="filter-tabs" role="tablist">
                     <button type="button" class="filter-btn active" onclick="setReviewFilter('all', this)">Semua ({{ count($review) }})</button>
-                    <button type="button" class="filter-btn tab-correct" onclick="setReviewFilter('correct', this)">✓ Benar ({{ $correct }})</button>
-                    <button type="button" class="filter-btn tab-wrong" onclick="setReviewFilter('wrong', this)">✕ Salah ({{ $wrong }})</button>
+                    <button type="button" class="filter-btn tab-correct" onclick="setReviewFilter('correct', this)" style="display:inline-flex; align-items:center; gap:5px;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Benar ({{ $correct }})
+                    </button>
+                    <button type="button" class="filter-btn tab-wrong" onclick="setReviewFilter('wrong', this)" style="display:inline-flex; align-items:center; gap:5px;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        Salah ({{ $wrong }})
+                    </button>
                 </div>
             </div>
 
@@ -526,22 +532,35 @@
 
                             $optClass = '';
                             $tagText  = null;
+                            $tagIcon  = null;
 
                             if ($isUserChoice && $isRightKey) {
                                 $optClass = 'user-correct';
-                                $tagText  = '✓ Pilihanmu (Benar)';
+                                $tagText  = 'Pilihanmu (Benar)';
+                                $tagIcon  = 'check';
                             } elseif ($isUserChoice && !$isRightKey) {
                                 $optClass = 'user-wrong';
-                                $tagText  = '✕ Pilihanmu (Salah)';
+                                $tagText  = 'Pilihanmu (Salah)';
+                                $tagIcon  = 'x';
                             } elseif ($isRightKey) {
                                 $optClass = 'actual-answer';
-                                $tagText  = '★ Jawaban Benar';
+                                $tagText  = 'Jawaban Benar';
+                                $tagIcon  = 'star';
                             }
                         @endphp
                         <div class="q-opt {{ $optClass }}">
                             <span class="q-opt-val">{{ $opt }}</span>
                             @if($tagText)
-                            <span class="q-opt-tag">{{ $tagText }}</span>
+                            <span class="q-opt-tag" style="display:inline-flex; align-items:center; gap:4px;">
+                                @if($tagIcon === 'check')
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                @elseif($tagIcon === 'x')
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                @elseif($tagIcon === 'star')
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                @endif
+                                {{ $tagText }}
+                            </span>
                             @endif
                         </div>
                         @endforeach

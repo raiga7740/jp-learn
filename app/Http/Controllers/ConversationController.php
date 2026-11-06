@@ -57,7 +57,7 @@ class ConversationController extends Controller
                 'japanese_title' => 'はじめまして！自己紹介',
                 'category'       => 'Sosial & Sehari-hari',
                 'level'          => 'N5',
-                'icon'           => '🤝',
+                'icon'           => 'users',
                 'accent_color'   => '#c4102e',
                 'description'    => 'Pelajari cara menyapa, memperkenalkan nama, asal negara, dan ungkapan kesopanan saat pertama kali bertemu orang Jepang.',
                 'speakers'       => [
@@ -142,7 +142,7 @@ class ConversationController extends Controller
                 'japanese_title' => 'レストランで注文する',
                 'category'       => 'Kuliner & Restoran',
                 'level'          => 'N5',
-                'icon'           => '🍜',
+                'icon'           => 'ramen',
                 'accent_color'   => '#e65100',
                 'description'    => 'Panduan memesan menu, menanyakan rekomendasi koki, memesan minuman, dan meminta tagihan saat makan di restoran Jepang.',
                 'speakers'       => [
@@ -227,7 +227,7 @@ class ConversationController extends Controller
                 'japanese_title' => 'コンビニでお買い物',
                 'category'       => 'Belanja & Belanjaan',
                 'level'          => 'N5',
-                'icon'           => '🏪',
+                'icon'           => 'store',
                 'accent_color'   => '#0288d1',
                 'description'    => 'Situasi paling sering ditemui di Jepang: kasir menanyakan pemanasan bento, kantong plastik belanja, sumpit/sendok, dan cara pembayaran.',
                 'speakers'       => [
@@ -312,7 +312,7 @@ class ConversationController extends Controller
                 'japanese_title' => '駅への行き方を尋ねる',
                 'category'       => 'Perjalanan & Transportasi',
                 'level'          => 'N5',
-                'icon'           => '🗺️',
+                'icon'           => 'map',
                 'accent_color'   => '#2e7d32',
                 'description'    => 'Keterampilan bertanya stasiun terdekat, memahami petunjuk belok kiri/kanan, lurus terus, dan mengucapkan terima kasih.',
                 'speakers'       => [

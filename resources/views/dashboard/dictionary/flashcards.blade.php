@@ -459,7 +459,12 @@
                 </svg>
                 Buku Favorit
             </a>
-            <span class="session-title">⭐ Flashcard Kosakata Favorit</span>
+            <span class="session-title" style="display:inline-flex; align-items:center; gap:6px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="#f59f00" stroke="#f59f00">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+                Flashcard Kosakata Favorit
+            </span>
             <span class="badge" style="background:#fff3bf; color:#d9480f;">{{ count($cards) }} KATA</span>
         </div>
 
@@ -494,7 +499,7 @@
                 </svg>
             </div>
             <h2 class="fc-completed-title">Belum Ada Kosakata Favorit</h2>
-            <p class="fc-completed-desc">Buku kosakata favoritmu masih kosong. Simpan beberapa kata dari kamus dengan menekan ikon bintang (⭐) terlebih dahulu untuk latihan kartu di sini!</p>
+            <p class="fc-completed-desc">Buku kosakata favoritmu masih kosong. Simpan beberapa kata dari kamus dengan menekan tombol bintang favorit terlebih dahulu untuk latihan kartu di sini!</p>
 
             <div class="fc-completed-actions">
                 <a href="{{ route('dictionary.index', ['tab' => 'all']) }}" class="button">
@@ -536,7 +541,12 @@
                     <!-- Front Side -->
                     <div class="fc-face fc-front">
                         <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
-                            <span class="fc-front-tag" id="cardCategoryFront">⭐ Kategori</span>
+                            <span class="fc-front-tag" id="cardCategoryFront" style="display:inline-flex; align-items:center; gap:5px;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <span id="cardCategoryText">Kategori</span>
+                            </span>
                             <span style="font-size:11px; font-weight:800; color:var(--muted);">FAVORIT SAYA</span>
                         </div>
 
@@ -752,7 +762,10 @@
                 isFlipped = false;
                 card3d.classList.remove('is-flipped');
 
-                cardCategoryFront.textContent = '⭐ ' + (card.category || 'Kosakata');
+                const catText = document.getElementById('cardCategoryText');
+                if (catText) {
+                    catText.textContent = card.category || 'Kosakata';
+                }
                 cardJapaneseFront.textContent = card.front;
 
                 cardCategoryBack.textContent = card.category || 'Arti';
@@ -870,7 +883,7 @@
                 toggleShuffleBtn.addEventListener('click', () => {
                     isShuffled = !isShuffled;
                     toggleShuffleBtn.classList.toggle('active', isShuffled);
-                    shuffleLabel.textContent = isShuffled ? 'Diacak ✓' : 'Acak';
+                    shuffleLabel.textContent = isShuffled ? 'Diacak' : 'Acak';
                     queue = isShuffled ? shuffle(queue) : [...queue];
                     renderCard();
                 });

@@ -669,7 +669,7 @@
             if (isCorrect) {
                 optBtn.classList.add('correct');
                 feedbackEl.className = 'rp-feedback success';
-                feedbackEl.innerHTML = `<strong>Jawaban Tepat! 🎉</strong> ${expl}`;
+                feedbackEl.innerHTML = `<strong style="display:inline-flex; align-items:center; gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Jawaban Tepat!</strong> ${expl}`;
 
                 // Play celebration voice
                 const optText = optBtn.querySelector('.rp-opt-text')?.textContent;

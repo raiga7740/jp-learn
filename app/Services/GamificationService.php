@@ -27,6 +27,7 @@ class GamificationService
         'writing_practice'      => ['xp' => 5,  'daily_limit' => 10, 'label' => 'Latihan menulis huruf'],
         'conversation_complete' => ['xp' => 15, 'daily_limit' => 4,  'label' => 'Percakapan selesai'],
         'vocab_saved'           => ['xp' => 5,  'daily_limit' => 10, 'label' => 'Menyimpan kosakata favorit'],
+        'jlpt_mock_complete'    => ['xp' => 50, 'daily_limit' => 2,  'label' => 'Menyelesaikan Simulasi Ujian JLPT N5'],
     ];
 
     /**

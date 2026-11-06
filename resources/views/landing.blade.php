@@ -409,14 +409,26 @@
             </div>
             <div class="pillars">
                 <article class="pillar reveal">
-                    <div class="ico">◧</div>
+                    <div class="ico">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="12" y1="3" x2="12" y2="21"></line>
+                            <path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7z" fill="currentColor" opacity="0.2"></path>
+                        </svg>
+                    </div>
                     <span class="tag">Pilar 01</span>
                     <h3>Mnemonik Asosiasi Visual</h3>
                     <p>Setiap karakter dilengkapi gambar ilustrasi dan cerita singkat yang menghubungkan bentuk huruf dengan bunyinya, sehingga lebih mudah diingat.</p>
                     <div class="foot"><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:4px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> 92 ilustrasi mnemonik</span><span>→</span></div>
                 </article>
                 <article class="pillar dark reveal">
-                    <div class="ico">◎</div>
+                    <div class="ico">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="6"></circle>
+                            <circle cx="12" cy="12" r="2"></circle>
+                        </svg>
+                    </div>
                     <span class="tag">Pilar 02</span>
                     <h3>Spaced Repetition (SRS)</h3>
                     <p>Algoritma kami menjadwalkan ulang kartu tepat sebelum kamu lupa. Kartu yang sulit muncul lebih sering, kartu yang mudah dijeda lebih lama.</p>
@@ -426,7 +438,13 @@
                     <div class="foot"><span>Kurva Ingatan</span><span style="color:#7ee0b0">↑ Optimal</span></div>
                 </article>
                 <article class="pillar reveal">
-                    <div class="ico">♪</div>
+                    <div class="ico">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                        </svg>
+                    </div>
                     <span class="tag">Pilar 03</span>
                     <h3>Uji Refleks Cepat &amp; Audio</h3>
                     <p>Latih kecepatan mengenali huruf dengan kuis berwaktu dan dengarkan pelafalan asli dari penutur Jepang untuk setiap karakter.</p>

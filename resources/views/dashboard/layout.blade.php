@@ -1025,6 +1025,15 @@
             </span>
             Quiz & Latihan
         </a>
+        <a href="{{ route('jlpt.index') }}" class="nav-link {{ request()->routeIs('jlpt.*') ? 'active' : '' }}">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            </span>
+            Simulasi JLPT N5
+        </a>
         <a href="{{ route('dashboard.progress') }}" class="nav-link {{ request()->routeIs('dashboard.progress') ? 'active' : '' }}">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1219,6 +1228,15 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="{{ route('jlpt.index') }}" class="dropdown-item" role="menuitem">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    Simulasi Ujian JLPT N5
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('dashboard.progress') }}" class="dropdown-item" role="menuitem">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <line x1="18" y1="20" x2="18" y2="10"></line>
@@ -1287,6 +1305,10 @@
             <a href="{{ route('dashboard.quizzes') }}" class="{{ request()->routeIs('dashboard.quizzes') || request()->routeIs('quiz.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                 Quiz
+            </a>
+            <a href="{{ route('jlpt.index') }}" class="{{ request()->routeIs('jlpt.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                JLPT N5
             </a>
             <a href="{{ route('dashboard.progress') }}" class="{{ request()->routeIs('dashboard.progress') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>

@@ -15,7 +15,8 @@
         box-shadow: 0 20px 48px -24px rgba(184,20,53,.65);
     }
     .flashcard-hero::after {
-        content: '🎴';
+        content: '単語';
+        font-family: 'Noto Sans JP', sans-serif;
         position: absolute;
         right: 28px;
         bottom: -24px;
@@ -304,7 +305,11 @@
     @if(($totalDueOverall ?? 0) > 0)
         <div class="srs-banner">
             <div class="srs-banner-left">
-                <div class="srs-banner-icon">⚡</div>
+                <div class="srs-banner-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                </div>
                 <div>
                     <div class="srs-banner-title">Ada {{ $totalDueOverall }} kartu jatuh tempo hari ini!</div>
                     <div class="srs-banner-desc">Waktunya mengulang kartu-kartu ini sebelum kamu mulai melupakannya.</div>
@@ -320,13 +325,22 @@
     @else
         <div class="srs-banner all-done">
             <div class="srs-banner-left">
-                <div class="srs-banner-icon">✨</div>
+                <div class="srs-banner-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                </div>
                 <div>
                     <div class="srs-banner-title">Semua kartu hafalanmu masih segar!</div>
                     <div class="srs-banner-desc">Tidak ada kartu yang jatuh tempo saat ini. Kamu bisa lanjut menghafal deck baru di bawah ini.</div>
                 </div>
             </div>
-            <span class="badge green" style="padding: 6px 14px; font-size: 12px;">SRS Terpenuhi ✓</span>
+            <span class="badge green" style="display:inline-flex; align-items:center; gap:6px; padding: 6px 14px; font-size: 12px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                SRS Terpenuhi
+            </span>
         </div>
     @endif
 
@@ -402,7 +416,7 @@
                             'kanji' => '漢',
                             'vocabulary' => '語',
                             'grammar' => '文',
-                            default => '🎴'
+                            default => '札'
                         } }}
                     </div>
                     <div class="deck-badges">

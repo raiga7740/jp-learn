@@ -7,6 +7,7 @@ use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DictionaryController;
 use App\Http\Controllers\FlashcardController;
+use App\Http\Controllers\JlptExamController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WritingPracticeController;
 
@@ -53,6 +54,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/kamus/{vocabulary}/catatan', [DictionaryController::class, 'updateNotes'])->name('dictionary.update-notes');
     Route::delete('/kamus/{vocabulary}',     [DictionaryController::class, 'destroy'])->name('dictionary.destroy');
     Route::get('/kamus/flashcards',          [DictionaryController::class, 'flashcards'])->name('dictionary.flashcards');
+
+    // Simulasi Ujian Resmi JLPT N5 (Mock Exam)
+    Route::get('/simulasi-jlpt',                     [JlptExamController::class, 'index'])->name('jlpt.index');
+    Route::get('/simulasi-jlpt/mulai',               [JlptExamController::class, 'start'])->name('jlpt.start');
+    Route::post('/simulasi-jlpt/submit',             [JlptExamController::class, 'submit'])->name('jlpt.submit');
+    Route::get('/simulasi-jlpt/hasil/{exam}',        [JlptExamController::class, 'result'])->name('jlpt.result');
+    Route::get('/simulasi-jlpt/sertifikat/{exam}',   [JlptExamController::class, 'certificate'])->name('jlpt.certificate');
 
     // Materials
     Route::get('/materi/{material:slug}',    [DashboardController::class, 'material'])->name('material.show');
