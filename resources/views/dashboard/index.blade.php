@@ -228,6 +228,23 @@
         </article>
 
         <article class="overview-card">
+            <span class="symbol" style="background: rgba(2, 136, 209, 0.12); color: #0288d1;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </span>
+            <h2>Percakapan (Kaiwa)</h2>
+            <p>Simulasi percakapan nyata (di restoran, minimarket, stasiun) dengan audio native dan kuis respon interaktif.</p>
+            <a class="button" href="{{ route('conversation.index') }}">
+                Mulai Percakapan
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </article>
+
+        <article class="overview-card">
             <span class="symbol">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
