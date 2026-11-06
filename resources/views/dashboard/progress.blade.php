@@ -239,6 +239,10 @@
         </div>
     </section>
 
+    @include('dashboard.partials.gamification-card')
+
+    @include('dashboard.partials.activity-heatmap')
+
     <section class="section" style="margin-bottom: 26px">
         <div class="section-head">
             <div>

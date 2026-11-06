@@ -638,5 +638,6 @@
     }
     @endif
 </script>
+@include('dashboard.partials.xp-toast')
 </body>
 </html>

@@ -1,13 +1,13 @@
 @extends('dashboard.layout')
 
 @php($pageTitle = 'Mode Belajar Flashcard')
-@php($pageSubtitle = 'Latih daya ingat huruf, kosakata, dan kanji dengan metode Spaced Repetition.')
+@php($pageSubtitle = 'Sistem Pengulangan Berkala (Spaced Repetition System) untuk memori jangka panjang.')
 
 @section('styles')
     .flashcard-hero {
         position: relative;
         overflow: hidden;
-        margin-bottom: 26px;
+        margin-bottom: 22px;
         padding: 30px 32px;
         border-radius: var(--radius);
         color: #fff;
@@ -34,6 +34,59 @@
         color: rgba(255,255,255,.9);
         font-size: 13.5px;
         line-height: 1.6;
+    }
+
+    /* ── SRS Review Today Banner ── */
+    .srs-banner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 20px 24px;
+        border-radius: var(--radius);
+        background: linear-gradient(135deg, #fff9db, #fff3bf);
+        border: 2px solid #ffd43b;
+        box-shadow: 0 12px 28px -12px rgba(245,159,0,.3);
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+    }
+    .srs-banner.all-done {
+        background: linear-gradient(135deg, #e6fcf5, #c3fae8);
+        border-color: #63e6be;
+        box-shadow: 0 12px 28px -12px rgba(18,184,134,.25);
+    }
+    .srs-banner-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+    .srs-banner-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        font-size: 24px;
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(0,0,0,.08);
+        flex-shrink: 0;
+    }
+    .srs-banner-title {
+        font-size: 16px;
+        font-weight: 900;
+        color: #2b1d0c;
+        margin-bottom: 2px;
+    }
+    .srs-banner.all-done .srs-banner-title {
+        color: #08402b;
+    }
+    .srs-banner-desc {
+        font-size: 13px;
+        color: #614a27;
+        line-height: 1.45;
+    }
+    .srs-banner.all-done .srs-banner-desc {
+        color: #1a6345;
     }
 
     .flashcard-stats {
@@ -105,7 +158,7 @@
         align-items: flex-start;
         justify-content: space-between;
         gap: 12px;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
     }
     .deck-icon {
         width: 52px;
@@ -134,37 +187,58 @@
         font-size: 17px;
         font-weight: 800;
         color: var(--ink);
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
     .deck-desc {
         color: var(--muted);
         font-size: 13px;
         line-height: 1.55;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
         flex: 1;
     }
+
+    /* SRS Mastery Bar per Deck */
+    .deck-srs-progress {
+        margin-bottom: 16px;
+        padding: 10px 12px;
+        background: #fbf9fb;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+    }
+    .srs-progress-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+        font-size: 11.5px;
+        font-weight: 700;
+    }
+    .srs-mastery-text {
+        color: var(--ink);
+    }
+    .srs-due-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        color: #d9480f;
+        font-weight: 800;
+    }
+
     .deck-footer {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 12px;
-        padding-top: 16px;
+        gap: 10px;
+        padding-top: 14px;
         border-top: 1px solid var(--line);
-    }
-    .deck-count {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 12px;
-        font-weight: 700;
-        color: var(--ink);
-    }
-    .deck-count svg {
-        color: var(--red);
+        flex-wrap: wrap;
     }
     .deck-actions {
         display: flex;
         gap: 8px;
+        flex-wrap: wrap;
+        width: 100%;
+        justify-content: flex-end;
     }
 
     .shortcuts-guide {
@@ -215,15 +289,46 @@
     }
     @media (max-width: 540px) {
         .flashcard-stats { grid-template-columns: 1fr; }
+        .srs-banner { flex-direction: column; align-items: flex-start; }
     }
 @endsection
 
 @section('content')
     <div class="flashcard-hero">
-        <span class="eyebrow">METODE SPURT MEMORY</span>
-        <h2>Latih Daya Ingat dengan Flashcard Interaktif</h2>
-        <p>Gunakan kartu bolak-balik untuk menguji pemanggilan memori aktif. Dilengkapi pelafalan suara audio native Jepang dan pengelompokan kartu otomatis agar belajar lebih efisien.</p>
+        <span class="eyebrow">SPACED REPETITION SYSTEM (SRS)</span>
+        <h2>Latih Daya Ingat Permanen dengan Flashcard SRS</h2>
+        <p>Setiap kartu yang kamu hafal akan dijadwalkan ulang secara otomatis pada interval waktu optimal (1 hari, 3 hari, 7 hari, dst) agar tersimpan kuat di memori jangka panjang.</p>
     </div>
+
+    <!-- SRS Daily Review Action Banner -->
+    @if(($totalDueOverall ?? 0) > 0)
+        <div class="srs-banner">
+            <div class="srs-banner-left">
+                <div class="srs-banner-icon">⚡</div>
+                <div>
+                    <div class="srs-banner-title">Ada {{ $totalDueOverall }} kartu jatuh tempo hari ini!</div>
+                    <div class="srs-banner-desc">Waktunya mengulang kartu-kartu ini sebelum kamu mulai melupakannya.</div>
+                </div>
+            </div>
+            <a href="{{ route('flashcards.daily-review') }}" class="button" style="background:#e8590c; box-shadow: 0 8px 20px -6px rgba(232,89,12,.5); font-size: 13.5px;">
+                Mulai Review Harian ({{ $totalDueOverall }})
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+            </a>
+        </div>
+    @else
+        <div class="srs-banner all-done">
+            <div class="srs-banner-left">
+                <div class="srs-banner-icon">✨</div>
+                <div>
+                    <div class="srs-banner-title">Semua kartu hafalanmu masih segar!</div>
+                    <div class="srs-banner-desc">Tidak ada kartu yang jatuh tempo saat ini. Kamu bisa lanjut menghafal deck baru di bawah ini.</div>
+                </div>
+            </div>
+            <span class="badge green" style="padding: 6px 14px; font-size: 12px;">SRS Terpenuhi ✓</span>
+        </div>
+    @endif
 
     <div class="flashcard-stats">
         <div class="fc-stat">
@@ -234,36 +339,8 @@
                 </svg>
             </span>
             <div>
-                <strong>{{ count($decks) }} Deck</strong>
-                <span>Materi Siap Latihan</span>
-            </div>
-        </div>
-
-        <div class="fc-stat">
-            <span class="fc-stat-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                </svg>
-            </span>
-            <div>
                 <strong>{{ $totalCards ?? $decks->sum('card_count') }} Kartu</strong>
-                <span>Total Kartu Hafalan</span>
-            </div>
-        </div>
-
-        <div class="fc-stat">
-            <span class="fc-stat-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                </svg>
-            </span>
-            <div>
-                <strong>Audio Native</strong>
-                <span>Pelafalan Suara Asli Jepang</span>
+                <span>Total Kartu Tersedia</span>
             </div>
         </div>
 
@@ -275,8 +352,33 @@
                 </svg>
             </span>
             <div>
-                <strong>Smart Queue</strong>
-                <span>Ulangi Kartu yang Belum Hafal</span>
+                <strong>{{ $totalLearnedOverall ?? 0 }} Kartu</strong>
+                <span>Pernah Dipelajari</span>
+            </div>
+        </div>
+
+        <div class="fc-stat">
+            <span class="fc-stat-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+            </span>
+            <div>
+                <strong>{{ $totalMasteredOverall ?? 0 }} Kartu</strong>
+                <span>Hafal Kuat (Box 3+)</span>
+            </div>
+        </div>
+
+        <div class="fc-stat">
+            <span class="fc-stat-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+            </span>
+            <div>
+                <strong>{{ $totalDueOverall ?? 0 }} Kartu</strong>
+                <span>Jatuh Tempo Hari Ini</span>
             </div>
         </div>
     </div>
@@ -284,7 +386,7 @@
     <div class="section-head">
         <div>
             <h2>Pilih Deck Flashcard</h2>
-            <p>Pilih topik yang ingin kamu latih hari ini. Sesi belajar dapat diulang kapan saja.</p>
+            <p>Pilih topik yang ingin kamu latih. Progres hafalan tersimpan otomatis ke akunmu.</p>
         </div>
     </div>
 
@@ -312,19 +414,33 @@
                 <h3 class="deck-title">{{ $deck['title'] }}</h3>
                 <p class="deck-desc">{{ $deck['description'] }}</p>
 
-                <div class="deck-footer">
-                    <div class="deck-count">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                        </svg>
-                        <span>{{ $deck['card_count'] }} Kartu</span>
+                <!-- SRS Mastery Progress Bar -->
+                <div class="deck-srs-progress">
+                    <div class="srs-progress-header">
+                        <span class="srs-mastery-text">Hafal: <strong>{{ $deck['mastered_count'] }}</strong> / {{ $deck['card_count'] }} ({{ $deck['mastery_percent'] }}%)</span>
+                        @if($deck['due_count'] > 0)
+                            <span class="srs-due-badge">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2s5 4.5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5.3 1.6 1.2 2.4 2 2.5C11 7 10 4 12 2z"/></svg>
+                                {{ $deck['due_count'] }} Review
+                            </span>
+                        @endif
                     </div>
+                    <div class="progress-track" style="height: 6px;">
+                        <div class="progress-fill" style="width: {{ $deck['mastery_percent'] }}%; background: linear-gradient(90deg, #10b981, #059669);"></div>
+                    </div>
+                </div>
 
+                <div class="deck-footer">
                     <div class="deck-actions">
-                        <a href="{{ route('flashcards.show', $deck['slug']) }}" class="button" style="padding: 9px 16px; font-size: 13px;">
-                            Mulai Latihan
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        @if($deck['due_count'] > 0)
+                            <a href="{{ route('flashcards.show', [$deck['slug'], 'mode' => 'due']) }}" class="button" style="background:#e8590c; padding: 8px 14px; font-size: 12.5px;">
+                                Review ({{ $deck['due_count'] }})
+                            </a>
+                        @endif
+
+                        <a href="{{ route('flashcards.show', $deck['slug']) }}" class="button {{ $deck['due_count'] > 0 ? 'ghost' : '' }}" style="padding: 8px 14px; font-size: 12.5px;">
+                            {{ $deck['mastery_percent'] > 0 ? 'Lanjut Belajar' : 'Mulai Deck' }}
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <polygon points="5 3 19 12 5 21 5 3"></polygon>
                             </svg>
                         </a>
@@ -349,11 +465,11 @@
             </div>
             <div class="shortcut-item">
                 <span class="kbd">←</span> atau <span class="kbd">1</span>
-                <span>Belum Hafal (Masuk antrean ulang)</span>
+                <span>Belum Hafal (SRS Box di-reset ke Box 1)</span>
             </div>
             <div class="shortcut-item">
                 <span class="kbd">→</span> atau <span class="kbd">2</span>
-                <span>Sudah Hafal</span>
+                <span>Sudah Hafal (Naik Leitner Box)</span>
             </div>
             <div class="shortcut-item">
                 <span class="kbd">A</span>
@@ -366,4 +482,3 @@
         </div>
     </div>
 @endsection
-

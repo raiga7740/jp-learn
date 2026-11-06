@@ -581,6 +581,17 @@
     // History for Undo
     let strokeHistory = [];
 
+    // Penanda bahwa karakter saat ini sudah dicoba ditulis (untuk XP)
+    let hasDrawn = false;
+
+    function commitPractice() {
+        if (!hasDrawn) return;
+        hasDrawn = false;
+        if (typeof window.reportActivity === 'function') {
+            window.reportActivity('writing_practice');
+        }
+    }
+
     // DOM Elements
     const canvasWrap = document.getElementById('canvasWrap');
     const canvas = document.getElementById('drawingCanvas');
@@ -651,6 +662,7 @@
 
     function startDrawing(e) {
         isDrawing = true;
+        hasDrawn = true;
         saveState();
         const pos = getPointerPos(e);
         lastX = pos.x;
@@ -724,6 +736,8 @@
     function setTargetCharacter(tab, index) {
         const list = datasets[tab];
         if (!list || list.length === 0) return;
+
+        commitPractice();
 
         if (index < 0) index = list.length - 1;
         if (index >= list.length) index = 0;
@@ -822,6 +836,7 @@
 
     // Download Drawing as PNG
     btnDownload.addEventListener('click', () => {
+        commitPractice();
         const item = datasets[currentTab][currentIndex];
         const exportCanvas = document.createElement('canvas');
         exportCanvas.width = canvas.width;

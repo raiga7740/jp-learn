@@ -175,6 +175,8 @@
         </div>
     </section>
 
+    @include('dashboard.partials.gamification-card')
+
     <section class="overview">
         <article class="overview-card">
             <span class="symbol">あ</span>
@@ -237,6 +239,25 @@
             <p>Simulasi percakapan nyata (di restoran, minimarket, stasiun) dengan audio native dan kuis respon interaktif.</p>
             <a class="button" href="{{ route('conversation.index') }}">
                 Mulai Percakapan
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </article>
+
+        <article class="overview-card">
+            <span class="symbol" style="background: rgba(245, 159, 0, 0.14); color: #d9480f;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    <polygon points="12 8 13.5 11 17 11.5 14.5 14 15 17.5 12 16 9 17.5 9.5 14 7 11.5 10.5 11 12 8"></polygon>
+                </svg>
+            </span>
+            <h2>Kamus & Buku Kosakata</h2>
+            <p>Cari arti kata JLPT N5, simpan kata-kata favorit ke buku saku pribadimu, dan catat mnemonik hafalanmu.</p>
+            <a class="button" href="{{ route('dictionary.index') }}">
+                Buka Kamus
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>

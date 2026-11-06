@@ -1,9 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DictionaryController;
 use App\Http\Controllers\FlashcardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WritingPracticeController;
@@ -29,15 +31,28 @@ Route::middleware('auth')->group(function () {
     // Dashboard home
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Gamifikasi (XP & streak) dari aktivitas di browser
+    Route::post('/aktivitas', [ActivityController::class, 'store'])->middleware('throttle:30,1')->name('activity.store');
+
     // Learning sections
     Route::get('/materi', [DashboardController::class, 'materials'])->name('dashboard.materials');
     Route::get('/percakapan', [ConversationController::class, 'index'])->name('conversation.index');
     Route::get('/percakapan/{slug}', [ConversationController::class, 'show'])->name('conversation.show');
     Route::get('/latihan-menulis', [WritingPracticeController::class, 'index'])->name('writing.index');
     Route::get('/flashcards', [FlashcardController::class, 'index'])->name('flashcards.index');
+    Route::get('/flashcards/review-harian', [FlashcardController::class, 'dailyReview'])->name('flashcards.daily-review');
+    Route::post('/flashcards/save-card', [FlashcardController::class, 'saveCardProgress'])->name('flashcards.save-card');
     Route::get('/flashcards/{material:slug}', [FlashcardController::class, 'show'])->name('flashcards.show');
     Route::get('/quiz', [DashboardController::class, 'quizzes'])->name('dashboard.quizzes');
     Route::get('/progress', [DashboardController::class, 'progress'])->name('dashboard.progress');
+
+    // Kamus Mini & Buku Kosakata Favorit
+    Route::get('/kamus',                     [DictionaryController::class, 'index'])->name('dictionary.index');
+    Route::post('/kamus/bookmark',           [DictionaryController::class, 'toggleBookmark'])->name('dictionary.bookmark');
+    Route::post('/kamus/tambah-kata',        [DictionaryController::class, 'storeCustomWord'])->name('dictionary.custom-word');
+    Route::post('/kamus/{vocabulary}/catatan', [DictionaryController::class, 'updateNotes'])->name('dictionary.update-notes');
+    Route::delete('/kamus/{vocabulary}',     [DictionaryController::class, 'destroy'])->name('dictionary.destroy');
+    Route::get('/kamus/flashcards',          [DictionaryController::class, 'flashcards'])->name('dictionary.flashcards');
 
     // Materials
     Route::get('/materi/{material:slug}',    [DashboardController::class, 'material'])->name('material.show');

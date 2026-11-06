@@ -650,6 +650,10 @@
     });
 
     // Roleplay Quiz options handler
+    const totalQuizCards = document.querySelectorAll('.roleplay-quiz-card').length;
+    const solvedQuizIds = new Set();
+    let conversationRewarded = false;
+
     document.querySelectorAll('.rp-option-btn').forEach(optBtn => {
         optBtn.addEventListener('click', () => {
             const isCorrect = optBtn.dataset.correct === 'true';
@@ -670,6 +674,14 @@
                 // Play celebration voice
                 const optText = optBtn.querySelector('.rp-opt-text')?.textContent;
                 if (optText) speak(optText);
+
+                solvedQuizIds.add(quizId);
+                if (!conversationRewarded && totalQuizCards > 0 && solvedQuizIds.size >= totalQuizCards) {
+                    conversationRewarded = true;
+                    if (typeof window.reportActivity === 'function') {
+                        window.reportActivity('conversation_complete');
+                    }
+                }
             } else {
                 optBtn.classList.add('wrong');
                 feedbackEl.className = 'rp-feedback error';

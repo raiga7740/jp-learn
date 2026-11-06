@@ -7,6 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -27,6 +28,25 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'xp' => 'integer',
+            'current_streak' => 'integer',
+            'longest_streak' => 'integer',
+            'last_activity_date' => 'date',
         ];
+    }
+
+    public function dailyActivities(): HasMany
+    {
+        return $this->hasMany(DailyActivity::class);
+    }
+
+    public function flashcardProgresses(): HasMany
+    {
+        return $this->hasMany(FlashcardProgress::class);
+    }
+
+    public function vocabularies(): HasMany
+    {
+        return $this->hasMany(UserVocabulary::class);
     }
 }

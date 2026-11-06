@@ -319,6 +319,140 @@
         }
         .date svg { color: var(--red); }
 
+        /* ── Gamifikasi: chip topbar ── */
+        .gami-chips { display: flex; align-items: center; gap: 8px; }
+        .gami-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: #fff;
+            font-size: 12px;
+            font-weight: 800;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .gami-chip.streak { color: #d9480f; }
+        .gami-chip.streak.off { color: var(--muted); }
+        .gami-chip.xp { color: var(--blue); }
+        .gami-chip svg { flex-shrink: 0; }
+
+        /* ── Gamifikasi: kartu ringkasan ── */
+        .gami-card {
+            display: grid;
+            grid-template-columns: 1fr 1.15fr;
+            gap: 16px;
+            margin-bottom: 26px;
+        }
+        .gami-panel {
+            padding: 22px 24px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--card);
+            box-shadow: var(--shadow);
+        }
+        .gami-panel-title {
+            margin-bottom: 14px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+        .gami-level-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+        .gami-level-badge {
+            display: grid;
+            place-items: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #2d3a8c, #5b6bd6);
+            color: #fff;
+            font-size: 24px;
+            font-weight: 900;
+            box-shadow: 0 10px 22px -10px rgba(45,58,140,.8);
+            flex-shrink: 0;
+        }
+        .gami-level-name { color: var(--ink); font-size: 15px; font-weight: 800; line-height: 1.3; }
+        .gami-level-xp { margin-top: 2px; color: var(--muted); font-size: 12.5px; font-weight: 600; }
+        .gami-xp-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 11.5px;
+            font-weight: 700;
+        }
+        .gami-streak-head { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+        .gami-flame {
+            display: grid;
+            place-items: center;
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            background: #f3ecee;
+            color: #b8a6ad;
+            flex-shrink: 0;
+        }
+        .gami-flame.on {
+            background: linear-gradient(135deg, #ffa94d, #f76707);
+            color: #fff;
+            box-shadow: 0 10px 22px -10px rgba(247,103,7,.85);
+        }
+        .gami-streak-number { color: var(--ink); font-size: 26px; font-weight: 900; line-height: 1.1; }
+        .gami-streak-number small { margin-left: 4px; color: var(--muted); font-size: 13px; font-weight: 700; }
+        .gami-streak-hint { margin-top: 3px; color: var(--muted); font-size: 12.5px; font-weight: 600; line-height: 1.4; }
+        .week-strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+        .week-day { text-align: center; color: var(--muted); font-size: 10.5px; font-weight: 700; }
+        .week-dot {
+            display: grid;
+            place-items: center;
+            width: 30px;
+            height: 30px;
+            margin: 5px auto 0;
+            border-radius: 50%;
+            background: #f3ecee;
+            color: transparent;
+        }
+        .week-dot.active { background: linear-gradient(135deg, #ffa94d, #f76707); color: #fff; }
+        .week-dot.today { outline: 2px solid var(--red); outline-offset: 2px; }
+        .gami-meta-row {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .gami-meta-row strong { color: var(--ink); font-weight: 800; }
+
+        /* ── Gamifikasi: heatmap aktivitas ── */
+        .heatmap-scroll { overflow-x: auto; padding-bottom: 6px; }
+        .heatmap { display: flex; gap: 4px; width: max-content; }
+        .heat-col { display: flex; flex-direction: column; gap: 4px; }
+        .heat-month { height: 14px; color: var(--muted); font-size: 10px; font-weight: 700; }
+        .heat-cell { width: 15px; height: 15px; border-radius: 4px; background: #f3ecee; }
+        .heat-cell.lv1 { background: #cfe9d8; }
+        .heat-cell.lv2 { background: #8fcfa6; }
+        .heat-cell.lv3 { background: #4fae76; }
+        .heat-cell.lv4 { background: #1f7a4a; }
+        .heat-cell.future { visibility: hidden; }
+        .heat-legend {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .heat-legend .heat-cell { width: 12px; height: 12px; }
+
         /* ── Profile Dropdown in Topbar ── */
         .profile-menu {
             position: relative;
@@ -775,6 +909,8 @@
         @media (max-width: 600px) {
             .topbar { padding: 10px 16px; gap: 10px; }
             .topbar p, .date { display: none; }
+            .gami-chip .gami-chip-label { display: none; }
+            .gami-chip { padding: 7px 10px; }
             .profile-btn-info { display: none; }
             .profile-btn { padding: 4px; border-radius: 50%; }
             .profile-chevron { display: none; }
@@ -788,6 +924,10 @@
             .section-head { align-items: flex-start; flex-direction: column; }
         }
 
+        @media (max-width: 760px) {
+            .gami-card { grid-template-columns: 1fr; }
+        }
+
         @yield('styles')
     </style>
 </head>
@@ -795,6 +935,7 @@
     @php
         $currentUser = $user ?? Auth::user();
         $initial = strtoupper(mb_substr($currentUser->name ?? 'U', 0, 1));
+        $gamiStats = $gami ?? app(\App\Services\GamificationService::class)->stats($currentUser);
     @endphp
 
     <!-- Mobile Drawer Backdrop -->
@@ -863,6 +1004,16 @@
                 </svg>
             </span>
             Percakapan
+        </a>
+        <a href="{{ route('dictionary.index') }}" class="nav-link {{ request()->routeIs('dictionary.*') ? 'active' : '' }}">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    <polygon points="12 8 13.5 11 17 11.5 14.5 14 15 17.5 12 16 9 17.5 9.5 14 7 11.5 10.5 11 12 8"></polygon>
+                </svg>
+            </span>
+            Kamus & Kosakata
         </a>
         <a href="{{ route('dashboard.quizzes') }}" class="nav-link {{ request()->routeIs('dashboard.quizzes') || request()->routeIs('quiz.*') ? 'active' : '' }}">
             <span class="nav-icon">
@@ -948,6 +1099,17 @@
             </div>
 
             <div class="topbar-right">
+                <div class="gami-chips">
+                    <a href="{{ route('dashboard.progress') }}" class="gami-chip streak {{ $gamiStats['streak'] > 0 ? '' : 'off' }}" title="Streak belajar harian">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2s5 4.5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5.3 1.6 1.2 2.4 2 2.5C11 7 10 4 12 2z"/></svg>
+                        {{ $gamiStats['streak'] }}<span class="gami-chip-label"> hari</span>
+                    </a>
+                    <a href="{{ route('dashboard.progress') }}" class="gami-chip xp" title="Level {{ $gamiStats['level'] }} · {{ $gamiStats['title'] }}">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        {{ number_format($gamiStats['xp']) }}<span class="gami-chip-label"> XP</span>
+                    </a>
+                </div>
+
                 <span class="date">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -1038,6 +1200,15 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="{{ route('dictionary.index') }}" class="dropdown-item" role="menuitem">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                                    </svg>
+                                    Kamus & Kosakata Favorit
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('dashboard.quizzes') }}" class="dropdown-item" role="menuitem">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="12" cy="12" r="10"></circle>
@@ -1109,6 +1280,10 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                 Percakapan
             </a>
+            <a href="{{ route('dictionary.index') }}" class="{{ request()->routeIs('dictionary.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                Kamus
+            </a>
             <a href="{{ route('dashboard.quizzes') }}" class="{{ request()->routeIs('dashboard.quizzes') || request()->routeIs('quiz.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                 Quiz
@@ -1175,6 +1350,7 @@
             if (backdrop) backdrop.addEventListener('click', closeSidebar);
         })();
     </script>
+    @include('dashboard.partials.xp-toast')
     @yield('scripts')
 </body>
 </html>

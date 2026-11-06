@@ -7,6 +7,7 @@ use App\Models\Quiz;
 use App\Models\QuizResult;
 use App\Models\User;
 use App\Models\UserProgress;
+use App\Services\GamificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,12 +15,17 @@ use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
+    public function __construct(private GamificationService $gamification)
+    {
+    }
+
     public function index(): View
     {
         $user = Auth::user();
 
         return view('dashboard.index', [
             'user' => $user,
+            'gami' => $this->gamification->stats($user),
             ...$this->learningSummary($user),
         ]);
     }
@@ -84,6 +90,8 @@ class DashboardController extends Controller
             'materials' => $materials,
             'progresses' => $progresses,
             'recentResults' => $recentResults,
+            'gami' => $this->gamification->stats($user),
+            'heatmap' => $this->gamification->heatmap($user),
             ...$this->learningSummary($user, $materials->count(), $progresses->where('completed', true)->count()),
         ]);
     }
@@ -110,12 +118,23 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
+        $wasCompleted = UserProgress::query()
+            ->where('user_id', $user->id)
+            ->where('material_id', $material->id)
+            ->where('completed', true)
+            ->exists();
+
         UserProgress::updateOrCreate(
             ['user_id' => $user->id, 'material_id' => $material->id],
             ['completed' => true, 'progress_percent' => 100, 'last_accessed_at' => now()]
         );
 
-        return redirect()->route('dashboard.materials')->with('success', "Materi \"{$material->title}\" selesai!");
+        $reward = $wasCompleted ? null : $this->gamification->award($user, 'material_complete');
+
+        return redirect()
+            ->route('dashboard.materials')
+            ->with('success', "Materi \"{$material->title}\" selesai!")
+            ->with('xp_gain', $reward);
     }
 
     // ── Quiz ──────────────────────────────────────────────────────────────────
@@ -170,10 +189,17 @@ class DashboardController extends Controller
             'answers'    => $answers,
         ]);
 
+        $reward = null;
+
+        if ($total > 0) {
+            $quizXp = 10 + intdiv($score, 10) + ($score === 100 ? 10 : 0);
+            $reward = $this->gamification->award(Auth::user(), 'quiz_complete', $quizXp);
+        }
+
         return redirect()->route('quiz.result', [
             'quiz'   => $quiz->id,
             'result' => $result->id,
-        ])->with('quiz_review', $review);
+        ])->with('quiz_review', $review)->with('xp_gain', $reward);
     }
 
     public function quizResult(Quiz $quiz, Request $request): View
