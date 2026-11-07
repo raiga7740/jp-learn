@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masuk — JP Learn</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,900&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
@@ -134,9 +140,8 @@
     <span class="kj" aria-hidden="true">入</span>
 
     <div class="card">
-        <a href="{{ route('landing') }}" class="brand">
-            <span class="brand-mark">あ</span>
-            JP<em>Learn</em>
+        <a href="{{ route('landing') }}" class="brand" style="display:inline-flex; margin-bottom:20px;">
+            <img src="{{ asset('images/logo.png') }}" alt="JP Learn" style="height: 50px; width: auto; object-fit: contain;">
         </a>
 
         <div class="heading">

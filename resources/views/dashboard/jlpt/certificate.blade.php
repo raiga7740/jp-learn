@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sertifikat Kelulusan JLPT N5 — {{ $user->name }}</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Noto+Serif+JP:wght@600;700;900&display=swap" rel="stylesheet">
@@ -329,6 +335,9 @@
 
         <!-- Header -->
         <div class="cert-header">
+            <div style="margin-bottom: 10px;">
+                <img src="{{ asset('images/logo.png') }}" alt="JP Learn" style="height: 48px; object-fit: contain;">
+            </div>
             <div class="cert-org-badge">JP LEARN · JAPANESE ACADEMY</div>
             <h1 class="cert-title-ja">日本語能力試験 模擬試験 合格証書</h1>
             <div class="cert-title-id">Sertifikat Kelulusan Resmi Simulasi JLPT N5</div>

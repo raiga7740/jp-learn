@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $pageTitle ?? 'Dashboard' }} — JP Learn</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@500;700;900&display=swap" rel="stylesheet">
@@ -944,9 +950,8 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar" aria-label="Navigasi sidebar">
         <div class="sidebar-header">
-            <a href="{{ route('dashboard') }}" class="brand">
-                <span class="brand-mark">あ</span>
-                <span>JP <em>Learn</em></span>
+            <a href="{{ route('dashboard') }}" class="brand" title="JP Learn">
+                <img src="{{ asset('images/logo-light.png') }}" alt="JP Learn" style="height: 40px; max-width: 175px; object-fit: contain;">
             </a>
             <button type="button" class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Tutup menu">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
