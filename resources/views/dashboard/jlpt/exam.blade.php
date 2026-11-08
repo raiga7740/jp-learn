@@ -560,6 +560,25 @@
     </div>
 </div>
 
+<!-- Modal: Waktu Ujian Habis -->
+<div class="modal-overlay" id="timeUpModal">
+    <div class="modal-dialog" style="text-align:center;">
+        <div class="modal-icon-warn" style="background:#ffe3e3; color:#c92a2a;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+        </div>
+        <h3 style="font-size:19px; font-weight:900; margin-bottom:8px; color:var(--ink);">Waktu Ujian Telah Habis!</h3>
+        <p style="font-size:13.5px; color:var(--muted); line-height:1.5; margin-bottom:20px;">
+            Waktu pengerjaan simulasi ujian JLPT N5 telah berakhir. Lembar jawaban Anda akan otomatis dikumpulkan dan dinilai sekarang.
+        </p>
+        <button type="button" class="button" onclick="examForm.submit()" style="background:var(--red); width:100%; justify-content:center; padding:12px; font-weight:800;">
+            Lihat Hasil Penilaian Ujian
+        </button>
+    </div>
+</div>
+
 <script>
     // State
     const totalQuestions = {{ count($questions) }};
@@ -587,8 +606,14 @@
         if (remaining <= 0) {
             clearInterval(timerInterval);
             timeTakenInput.value = durationSeconds;
-            alert('Waktu ujian telah habis! Jawaban kamu akan otomatis dikumpulkan.');
-            examForm.submit();
+            if (submitConfirmModal) submitConfirmModal.classList.remove('open');
+            const timeUpModal = document.getElementById('timeUpModal');
+            if (timeUpModal) {
+                timeUpModal.classList.add('open');
+            }
+            setTimeout(() => {
+                examForm.submit();
+            }, 2500);
             return;
         }
 

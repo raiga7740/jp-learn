@@ -612,7 +612,7 @@
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
-                    + Tambah Kata Baru
+                    Tambah Kata Baru
                 </button>
 
                 @if($totalFavorites > 0)
@@ -812,10 +812,10 @@
                             <span style="font-size:11.5px; color:var(--muted);">
                                 Ditambahkan {{ $item->created_at ? $item->created_at->diffForHumans() : 'baru saja' }}
                             </span>
-                            <form action="{{ route('dictionary.destroy', $bookmarkId) }}" method="POST" onsubmit="return confirm('Hapus kosakata ini dari daftar favorit?')">
+                            <form action="{{ route('dictionary.destroy', $bookmarkId) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-card-delete">
+                                <button type="button" class="btn-card-delete" onclick="openDeleteFavModal(this.form)">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <polyline points="3 6 5 6 21 6"></polyline>
                                         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -907,6 +907,28 @@
     </div>
 </div>
 
+<!-- Modal: Konfirmasi Hapus Kosakata Favorit -->
+<div class="modal-overlay" id="deleteFavModal">
+    <div class="modal-dialog" style="max-width: 420px; text-align: center; padding: 32px 28px 24px;">
+        <div style="width:62px; height:62px; border-radius:20px; background:#fde8ec; color:var(--red); display:grid; place-items:center; margin:0 auto 16px; box-shadow:0 8px 20px -6px rgba(196,16,46,.35);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+        </div>
+        <h3 style="font-size:20px; font-weight:800; color:var(--ink); margin-bottom:8px;">Hapus dari Favorit?</h3>
+        <p style="font-size:13.5px; color:var(--muted); line-height:1.55; margin-bottom:24px;">
+            Kosakata ini akan dihapus dari daftar favorit Anda. Anda tetap dapat mencarinya kembali di kamus.
+        </p>
+        <div style="display:flex; justify-content:center; gap:10px;">
+            <button type="button" class="button ghost" onclick="closeDeleteFavModal()" style="flex:1;">Batal</button>
+            <button type="button" class="button" id="btnConfirmDeleteFav" style="flex:1.2; background:var(--red); border:none; color:#fff;">Ya, Hapus</button>
+        </div>
+    </div>
+</div>
+
 <!-- Modal: Ubah Catatan Pribadi -->
 <div class="modal-overlay" id="noteModal">
     <div class="modal-dialog">
@@ -933,6 +955,28 @@
                 <button type="submit" class="btn-dict-action btn-dict-primary" id="btnSaveNote">Simpan Catatan</button>
             </div>
         </form>
+    </div>
+</div>
+
+<!-- Modal: Konfirmasi Hapus Kosakata Favorit -->
+<div class="modal-overlay" id="deleteFavModal">
+    <div class="modal-dialog" style="max-width: 420px; text-align: center; padding: 32px 28px 24px;">
+        <div style="width:62px; height:62px; border-radius:20px; background:#fde8ec; color:var(--red); display:grid; place-items:center; margin:0 auto 16px; box-shadow:0 8px 20px -6px rgba(196,16,46,.35);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+        </div>
+        <h3 style="font-size:20px; font-weight:800; color:var(--ink); margin-bottom:8px;">Hapus dari Favorit?</h3>
+        <p style="font-size:13.5px; color:var(--muted); line-height:1.55; margin-bottom:24px;">
+            Kosakata ini akan dihapus dari daftar favorit Anda. Anda tetap dapat mencarinya kembali di kamus.
+        </p>
+        <div style="display:flex; justify-content:center; gap:10px;">
+            <button type="button" class="button ghost" onclick="closeDeleteFavModal()" style="flex:1;">Batal</button>
+            <button type="button" class="button" id="btnConfirmDeleteFav" style="flex:1.2; background:var(--red); border:none; color:#fff;">Ya, Hapus</button>
+        </div>
     </div>
 </div>
 
@@ -1070,8 +1114,31 @@
         .catch(err => console.error('Save note error:', err));
     }
 
+    // Delete Favorite Modal Logic
+    let pendingDeleteForm = null;
+    const deleteFavModal = document.getElementById('deleteFavModal');
+    const btnConfirmDelete = document.getElementById('btnConfirmDeleteFav');
+
+    function openDeleteFavModal(form) {
+        pendingDeleteForm = form;
+        if (deleteFavModal) deleteFavModal.classList.add('open');
+    }
+
+    function closeDeleteFavModal() {
+        pendingDeleteForm = null;
+        if (deleteFavModal) deleteFavModal.classList.remove('open');
+    }
+
+    if (btnConfirmDelete) {
+        btnConfirmDelete.addEventListener('click', () => {
+            if (pendingDeleteForm) {
+                pendingDeleteForm.submit();
+            }
+        });
+    }
+
     // Close modals on outside click
-    [addWordModal, noteModal].forEach(modal => {
+    [addWordModal, noteModal, deleteFavModal].forEach(modal => {
         if (modal) {
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) modal.classList.remove('open');

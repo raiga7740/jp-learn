@@ -277,6 +277,178 @@
         gap: 8px;
     }
 
+    /* ── Accuracy Checker ── */
+    .btn-check-accuracy {
+        width: 100%;
+        margin-top: 10px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: none;
+        background: linear-gradient(135deg, var(--red), var(--red-2));
+        color: #fff;
+        font-size: 13.5px;
+        font-weight: 800;
+        letter-spacing: .02em;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 8px 20px -6px rgba(196,16,46,.55);
+        transition: transform .18s, box-shadow .18s;
+    }
+    .btn-check-accuracy:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px -6px rgba(196,16,46,.65);
+    }
+    .btn-check-accuracy:active {
+        transform: none;
+    }
+
+    .accuracy-card {
+        margin-top: 12px;
+        padding: 16px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: #faf8fb;
+        animation: fadeInAcc .25s ease;
+    }
+    @keyframes fadeInAcc {
+        from { opacity: 0; transform: translateY(-6px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .acc-top {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 12px;
+    }
+    .acc-score-wrap {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: #fff;
+        border: 3px solid var(--green);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(0,0,0,.06);
+    }
+    .acc-score-wrap.good { border-color: #2b8a3e; color: #2b8a3e; }
+    .acc-score-wrap.medium { border-color: #f59f00; color: #f59f00; }
+    .acc-score-wrap.poor { border-color: #c4102e; color: #c4102e; }
+
+    .acc-score-val {
+        font-size: 16px;
+        font-weight: 900;
+        line-height: 1;
+    }
+    .acc-score-label {
+        font-size: 9px;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-top: 2px;
+    }
+
+    .acc-meta {
+        flex: 1;
+    }
+    .acc-status-badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 800;
+        margin-bottom: 4px;
+    }
+    .acc-status-badge.good { background: #d3f9d8; color: #2b8a3e; }
+    .acc-status-badge.medium { background: #fff3bf; color: #d9480f; }
+    .acc-status-badge.poor { background: #ffe3e3; color: #c92a2a; }
+
+    .acc-status-desc {
+        font-size: 11.5px;
+        color: var(--ink);
+        line-height: 1.4;
+    }
+
+    .acc-bars {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 12px;
+        padding: 10px 12px;
+        background: #fff;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+    }
+    .acc-bar-item {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+    .acc-bar-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        color: var(--muted);
+    }
+    .acc-bar-label strong {
+        color: var(--ink);
+    }
+    .acc-bar-track {
+        height: 6px;
+        background: #eee6f0;
+        border-radius: 999px;
+        overflow: hidden;
+    }
+    .acc-bar-fill {
+        height: 100%;
+        border-radius: 999px;
+        background: var(--green);
+        transition: width .4s ease;
+    }
+
+    .acc-actions {
+        display: flex;
+        gap: 8px;
+    }
+    .acc-btn-retry, .acc-btn-next {
+        flex: 1;
+        padding: 8px 12px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: .18s;
+        border: none;
+    }
+    .acc-btn-retry {
+        background: #fff;
+        border: 1px solid var(--line);
+        color: var(--ink);
+    }
+    .acc-btn-retry:hover {
+        background: #fbf5f7;
+        border-color: var(--red);
+        color: var(--red);
+    }
+    .acc-btn-next {
+        background: var(--navy);
+        color: #fff;
+    }
+    .acc-btn-next:hover {
+        background: var(--navy-2);
+        transform: translateY(-1px);
+    }
+
     /* ── Right Column: Character Library & Tabs ── */
     .library-card {
         background: var(--card);
@@ -401,6 +573,12 @@
         color: var(--muted);
         text-transform: lowercase;
         margin-top: 2px;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding: 0 2px;
+        text-align: center;
     }
     .char-tile.active .char-tile-romaji {
         color: var(--red);
@@ -502,6 +680,59 @@
                     </svg>
                     Simpan
                 </button>
+            </div>
+
+            <!-- Periksa Akurasi Button -->
+            <button type="button" class="btn-check-accuracy" id="btnCheckAccuracy">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                Periksa Akurasi Tulisan
+            </button>
+
+            <!-- Accuracy Result Card -->
+            <div class="accuracy-card" id="accuracyCard" style="display: none;">
+                <div class="acc-top">
+                    <div class="acc-score-wrap" id="accScoreWrap">
+                        <span class="acc-score-val" id="accScoreVal">0%</span>
+                        <span class="acc-score-label">Akurasi</span>
+                    </div>
+                    <div class="acc-meta">
+                        <div class="acc-status-badge" id="accStatusBadge">Sempurna</div>
+                        <div class="acc-status-desc" id="accStatusDesc">Bentuk tulisan sangat presisi dan mirip dengan panduan.</div>
+                    </div>
+                </div>
+
+                <div class="acc-bars">
+                    <div class="acc-bar-item">
+                        <div class="acc-bar-label">
+                            <span>Kelengkapan Bentuk (Coverage)</span>
+                            <strong id="accCoverageVal">0%</strong>
+                        </div>
+                        <div class="acc-bar-track"><div class="acc-bar-fill" id="accCoverageFill" style="width: 0%;"></div></div>
+                    </div>
+                    <div class="acc-bar-item">
+                        <div class="acc-bar-label">
+                            <span>Kerapian & Presisi (Precision)</span>
+                            <strong id="accPrecisionVal">0%</strong>
+                        </div>
+                        <div class="acc-bar-track"><div class="acc-bar-fill" id="accPrecisionFill" style="width: 0%;"></div></div>
+                    </div>
+                </div>
+
+                <div class="acc-actions">
+                    <button type="button" class="acc-btn-retry" id="btnAccRetry">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="1 4 1 10 7 10"></polyline>
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                        </svg>
+                        Coba Lagi
+                    </button>
+                    <button type="button" class="acc-btn-next" id="btnAccNext">
+                        Lanjut Huruf Berikutnya &rarr;
+                    </button>
+                </div>
             </div>
 
             <!-- Next & Previous character -->
@@ -610,6 +841,20 @@
     const btnPrevChar = document.getElementById('btnPrevChar');
     const btnNextChar = document.getElementById('btnNextChar');
 
+    // Accuracy Checker Elements
+    const btnCheckAccuracy = document.getElementById('btnCheckAccuracy');
+    const accuracyCard = document.getElementById('accuracyCard');
+    const accScoreVal = document.getElementById('accScoreVal');
+    const accScoreWrap = document.getElementById('accScoreWrap');
+    const accStatusBadge = document.getElementById('accStatusBadge');
+    const accStatusDesc = document.getElementById('accStatusDesc');
+    const accCoverageVal = document.getElementById('accCoverageVal');
+    const accCoverageFill = document.getElementById('accCoverageFill');
+    const accPrecisionVal = document.getElementById('accPrecisionVal');
+    const accPrecisionFill = document.getElementById('accPrecisionFill');
+    const btnAccRetry = document.getElementById('btnAccRetry');
+    const btnAccNext = document.getElementById('btnAccNext');
+
     const libTabs = document.querySelectorAll('.lib-tab');
     const charSearchInput = document.getElementById('charSearchInput');
     const charGrid = document.getElementById('charGrid');
@@ -713,9 +958,16 @@
         }
     }
 
+    function resetAccuracyCard() {
+        if (accuracyCard) {
+            accuracyCard.style.display = 'none';
+        }
+    }
+
     function clearCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         strokeHistory = [];
+        resetAccuracyCard();
     }
 
     // Web Speech API
@@ -749,8 +1001,13 @@
         // Update Studio Header
         activeBadge.textContent = ucfirst(item.type);
         activeBadge.className = 'studio-badge ' + item.type;
-        activeTitle.textContent = `Karakter: ${item.char} (${item.romaji || ''})`;
-        activeSub.textContent = item.meaning || item.group || '';
+        if (item.type === 'kanji') {
+            activeTitle.textContent = `Kanji: ${item.char} (${item.meaning || ''})`;
+            activeSub.textContent = `Kun: ${item.kun || '-'} • On: ${item.on || '-'} • ${item.category || item.group || ''}`;
+        } else {
+            activeTitle.textContent = `Karakter: ${item.char} (${item.romaji || ''})`;
+            activeSub.textContent = item.meaning || item.group || '';
+        }
 
         // Update watermark
         watermark.textContent = item.char;
@@ -787,8 +1044,12 @@
         list.forEach((item, idx) => {
             const matchesQuery = !query || 
                 item.char.toLowerCase().includes(query) ||
+                (item.label && item.label.toLowerCase().includes(query)) ||
                 (item.romaji && item.romaji.toLowerCase().includes(query)) ||
-                (item.meaning && item.meaning.toLowerCase().includes(query));
+                (item.meaning && item.meaning.toLowerCase().includes(query)) ||
+                (item.kun && item.kun.toLowerCase().includes(query)) ||
+                (item.on && item.on.toLowerCase().includes(query)) ||
+                (item.group && item.group.toLowerCase().includes(query));
 
             if (!matchesQuery) return;
 
@@ -797,9 +1058,15 @@
             tile.dataset.tab = currentTab;
             tile.dataset.index = idx;
 
+            const subLabel = item.label || item.meaning || item.romaji || '';
+            const tileTooltip = item.type === 'kanji'
+                ? `${item.char} — ${item.meaning || ''} (Kun: ${item.kun || '-'}, On: ${item.on || '-'})`
+                : `${item.char} (${item.romaji || ''})`;
+
+            tile.title = tileTooltip;
             tile.innerHTML = `
                 <span class="char-tile-char">${item.char}</span>
-                <span class="char-tile-romaji">${item.romaji ? item.romaji.split(' ')[0].replace(/[^a-zA-Z]/g, '') : ''}</span>
+                <span class="char-tile-romaji" title="${escapeHtml(subLabel)}">${escapeHtml(subLabel)}</span>
             `;
 
             tile.addEventListener('click', () => {
@@ -879,6 +1146,236 @@
         const item = datasets[currentTab][currentIndex];
         if (item) speakJapanese(item.char);
     });
+
+    // Accuracy Evaluation System
+    function checkDrawingAccuracy() {
+        const item = datasets[currentTab][currentIndex];
+        if (!item) return;
+
+        const sampleSize = 100;
+
+        // 1. Off-screen canvas for reference character
+        const refCanvas = document.createElement('canvas');
+        refCanvas.width = sampleSize;
+        refCanvas.height = sampleSize;
+        const refCtx = refCanvas.getContext('2d');
+
+        refCtx.fillStyle = '#ffffff';
+        refCtx.fillRect(0, 0, sampleSize, sampleSize);
+
+        const fontSize = (item.type === 'kanji' ? 66 : 72);
+        refCtx.font = `900 ${fontSize}px "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif`;
+        refCtx.textAlign = 'center';
+        refCtx.textBaseline = 'middle';
+        refCtx.fillStyle = '#000000';
+        refCtx.fillText(item.char, sampleSize / 2, sampleSize / 2);
+
+        const refImgData = refCtx.getImageData(0, 0, sampleSize, sampleSize).data;
+
+        // 2. Off-screen canvas for user's drawing
+        const userCanvas = document.createElement('canvas');
+        userCanvas.width = sampleSize;
+        userCanvas.height = sampleSize;
+        const userCtx = userCanvas.getContext('2d');
+
+        userCtx.fillStyle = '#ffffff';
+        userCtx.fillRect(0, 0, sampleSize, sampleSize);
+        userCtx.drawImage(canvas, 0, 0, sampleSize, sampleSize);
+
+        const userImgData = userCtx.getImageData(0, 0, sampleSize, sampleSize).data;
+
+        // 3. Build binary masks
+        const refMask = new Uint8Array(sampleSize * sampleSize);
+        const userMask = new Uint8Array(sampleSize * sampleSize);
+        let totalRefPixels = 0;
+        let totalUserPixels = 0;
+
+        for (let y = 0; y < sampleSize; y++) {
+            for (let x = 0; x < sampleSize; x++) {
+                const idx = (y * sampleSize + x) * 4;
+
+                // Reference ink (dark pixels on white background)
+                const rR = refImgData[idx];
+                const rG = refImgData[idx + 1];
+                const rB = refImgData[idx + 2];
+                const rLum = 0.299 * rR + 0.587 * rG + 0.114 * rB;
+                if (rLum < 180) {
+                    refMask[y * sampleSize + x] = 1;
+                    totalRefPixels++;
+                }
+
+                // User ink (strokes drawn by user)
+                const uR = userImgData[idx];
+                const uG = userImgData[idx + 1];
+                const uB = userImgData[idx + 2];
+                const uA = userImgData[idx + 3];
+                const uLum = 0.299 * uR + 0.587 * uG + 0.114 * uB;
+                if (uA > 50 && uLum < 235) {
+                    userMask[y * sampleSize + x] = 1;
+                    totalUserPixels++;
+                }
+            }
+        }
+
+        // Empty canvas check
+        if (totalUserPixels < 25) {
+            displayAccuracyResult({
+                score: 0,
+                coverage: 0,
+                precision: 0,
+                status: 'bad',
+                title: 'Kanvas Masih Kosong',
+                desc: 'Silakan tulis huruf di atas kanvas terlebih dahulu sebelum memeriksa akurasi.'
+            });
+            return;
+        }
+
+        // 4. Reference dilation (tolerance zone for brush width and minor shifts, radius = 3px)
+        const radRef = 3;
+        const dilatedRef = new Uint8Array(sampleSize * sampleSize);
+        for (let y = 0; y < sampleSize; y++) {
+            for (let x = 0; x < sampleSize; x++) {
+                if (refMask[y * sampleSize + x] === 1) {
+                    for (let dy = -radRef; dy <= radRef; dy++) {
+                        const ny = y + dy;
+                        if (ny < 0 || ny >= sampleSize) continue;
+                        for (let dx = -radRef; dx <= radRef; dx++) {
+                            const nx = x + dx;
+                            if (nx < 0 || nx >= sampleSize) continue;
+                            if (dx * dx + dy * dy <= radRef * radRef) {
+                                dilatedRef[ny * sampleSize + nx] = 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 5. User stroke dilation (radius = 4px) to detect coverage of reference strokes
+        const radUser = 4;
+        const dilatedUser = new Uint8Array(sampleSize * sampleSize);
+        for (let y = 0; y < sampleSize; y++) {
+            for (let x = 0; x < sampleSize; x++) {
+                if (userMask[y * sampleSize + x] === 1) {
+                    for (let dy = -radUser; dy <= radUser; dy++) {
+                        const ny = y + dy;
+                        if (ny < 0 || ny >= sampleSize) continue;
+                        for (let dx = -radUser; dx <= radUser; dx++) {
+                            const nx = x + dx;
+                            if (nx < 0 || nx >= sampleSize) continue;
+                            if (dx * dx + dy * dy <= radUser * radUser) {
+                                dilatedUser[ny * sampleSize + nx] = 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 6. Compute Precision (percentage of user ink that falls inside the reference tolerance zone)
+        let hitUserPixels = 0;
+        for (let i = 0; i < sampleSize * sampleSize; i++) {
+            if (userMask[i] === 1 && dilatedRef[i] === 1) {
+                hitUserPixels++;
+            }
+        }
+        const precision = totalUserPixels > 0 ? (hitUserPixels / totalUserPixels) : 0;
+
+        // 7. Compute Coverage (percentage of reference glyph covered by user's strokes)
+        let coveredRefPixels = 0;
+        for (let i = 0; i < sampleSize * sampleSize; i++) {
+            if (refMask[i] === 1 && dilatedUser[i] === 1) {
+                coveredRefPixels++;
+            }
+        }
+        const coverage = totalRefPixels > 0 ? (coveredRefPixels / totalRefPixels) : 0;
+
+        // 8. Scribble penalty (if user filled the canvas with wild scribbles)
+        let penalty = 0;
+        const excessRatio = totalUserPixels / Math.max(1, totalRefPixels);
+        if (excessRatio > 2.2) {
+            penalty = Math.min(0.45, (excessRatio - 2.2) * 0.14);
+        }
+
+        // 9. Weighted composite score
+        let rawScore = ((coverage * 0.58) + (precision * 0.42) - penalty) * 105;
+        let score = Math.max(0, Math.min(100, Math.round(rawScore)));
+
+        if (coverage < 0.25) {
+            score = Math.min(score, 30);
+        }
+
+        // 10. Grade feedback
+        let status = 'bad';
+        let title = 'Kurang Tepat';
+        let desc = 'Bentuk tulisan belum sesuai. Coba aktifkan fitur "Bayangan" dan ikuti garis panduannya.';
+
+        if (score >= 85) {
+            status = 'good';
+            title = 'Sempurna! ✨';
+            desc = 'Luar biasa! Goresanmu sangat rapi, proporsional, dan sangat mirip dengan bentuk karakter aslinya.';
+        } else if (score >= 70) {
+            status = 'good';
+            title = 'Sangat Bagus!';
+            desc = 'Bentuk tulisan sudah jelas terbaca dan polanya tepat. Pertahankan kerapian goresanmu!';
+        } else if (score >= 50) {
+            status = 'medium';
+            title = 'Cukup Baik';
+            desc = 'Bentuk dasar sudah terlihat, namun beberapa goresan keluar jalur atau belum lengkap.';
+        }
+
+        displayAccuracyResult({
+            score: score,
+            coverage: Math.round(coverage * 100),
+            precision: Math.round(precision * 100),
+            status: status,
+            title: title,
+            desc: desc
+        });
+
+        // XP reward for solid attempts
+        if (score >= 70) {
+            commitPractice();
+        }
+    }
+
+    function displayAccuracyResult(res) {
+        if (!accuracyCard) return;
+
+        accuracyCard.style.display = 'block';
+
+        accScoreVal.textContent = res.score + '%';
+        accScoreWrap.className = 'acc-score-wrap ' + res.status;
+
+        accStatusBadge.textContent = res.title;
+        accStatusBadge.className = 'acc-status-badge ' + res.status;
+        accStatusDesc.textContent = res.desc;
+
+        accCoverageVal.textContent = res.coverage + '%';
+        accCoverageFill.style.width = res.coverage + '%';
+
+        accPrecisionVal.textContent = res.precision + '%';
+        accPrecisionFill.style.width = res.precision + '%';
+
+        // Smooth scroll to view result if not fully visible
+        accuracyCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Accuracy Button Listeners
+    if (btnCheckAccuracy) {
+        btnCheckAccuracy.addEventListener('click', checkDrawingAccuracy);
+    }
+    if (btnAccRetry) {
+        btnAccRetry.addEventListener('click', () => {
+            clearCanvas();
+            resetAccuracyCard();
+        });
+    }
+    if (btnAccNext) {
+        btnAccNext.addEventListener('click', () => {
+            setTargetCharacter(currentTab, currentIndex + 1);
+        });
+    }
 
     // Brush Sizes
     brushButtons.forEach(btn => {

@@ -88,6 +88,9 @@
         gap: 10px;
         padding: 14px 28px;
         border-radius: 14px;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
         background: linear-gradient(135deg, var(--red-2), var(--red));
         color: #fff;
         font-size: 15px;
@@ -300,12 +303,12 @@
         </div>
 
         <div>
-            <a href="{{ route('jlpt.start') }}" class="btn-start-exam" onclick="return confirm('Mulai simulasi ujian sekarang? Waktu 30 menit akan langsung berjalan.')">
+            <button type="button" class="btn-start-exam js-open-exam-modal">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                     <polygon points="5 3 19 12 5 21 5 3"></polygon>
                 </svg>
                 Mulai Ujian Sekarang
-            </a>
+            </button>
         </div>
     </div>
 
@@ -429,9 +432,9 @@
         @if($history->isEmpty())
             <div style="text-align:center; padding:32px 16px; color:var(--muted);">
                 <p style="margin-bottom:12px;">Kamu belum pernah mengerjakan simulasi ujian JLPT N5.</p>
-                <a href="{{ route('jlpt.start') }}" class="button" onclick="return confirm('Mulai simulasi ujian sekarang?')">
+                <button type="button" class="button js-open-exam-modal" style="cursor:pointer;">
                     Coba Ujian Pertama
-                </a>
+                </button>
             </div>
         @else
             <div style="overflow-x:auto;">
@@ -492,5 +495,7 @@
         @endif
     </div>
 </div>
+
+@include('dashboard.jlpt.partials.start-modal')
 @endsection
 

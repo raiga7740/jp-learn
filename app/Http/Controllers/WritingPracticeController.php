@@ -26,6 +26,7 @@ class WritingPracticeController extends Controller
                 foreach ($sec['characters'] ?? [] as $c) {
                     $hiraganaChars[] = [
                         'char'     => $c['kana'],
+                        'label'    => $c['romaji'],
                         'romaji'   => $c['romaji'],
                         'group'    => $secTitle,
                         'type'     => 'hiragana',
@@ -45,6 +46,7 @@ class WritingPracticeController extends Controller
                 foreach ($sec['characters'] ?? [] as $c) {
                     $katakanaChars[] = [
                         'char'     => $c['kana'],
+                        'label'    => $c['romaji'],
                         'romaji'   => $c['romaji'],
                         'group'    => $secTitle,
                         'type'     => 'katakana',
@@ -60,12 +62,21 @@ class WritingPracticeController extends Controller
 
         if ($kanjiMat && isset($kanjiMat->content['kanji']) && is_array($kanjiMat->content['kanji'])) {
             foreach ($kanjiMat->content['kanji'] as $k) {
+                $meaning = $k['meaning'] ?? '-';
+                $kun     = $k['kun'] ?? '-';
+                $on      = $k['on'] ?? '-';
+                $cat     = $k['category'] ?? 'Kanji N5';
+
                 $kanjiChars[] = [
                     'char'     => $k['kanji'],
-                    'romaji'   => 'Kun: ' . ($k['kun'] ?? '-') . ' • On: ' . ($k['on'] ?? '-'),
-                    'group'    => $k['category'] ?? 'Kanji N5',
+                    'label'    => $meaning,
+                    'romaji'   => $meaning,
+                    'meaning'  => $meaning,
+                    'kun'      => $kun,
+                    'on'       => $on,
+                    'group'    => $cat,
+                    'category' => $cat,
                     'type'     => 'kanji',
-                    'meaning'  => 'Arti: ' . ($k['meaning'] ?? '-'),
                 ];
             }
         }

@@ -46,6 +46,7 @@
             border: 1px solid var(--line); background: var(--card);
             color: var(--ink-2); font-size: 12.5px; font-weight: 600;
             text-decoration: none; transition: .2s; flex-shrink: 0;
+            cursor: pointer; font-family: inherit;
         }
         .back-btn:hover { border-color: var(--red); color: var(--red); }
         .quiz-title-bar {
@@ -190,15 +191,123 @@
             .timer { padding: 6px 12px; }
             .timer-val { font-size: 13px; }
         }
+
+        /* ── Exit Modal ── */
+        .exit-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(14, 10, 26, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all .25s ease;
+        }
+        .exit-modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        .exit-modal-card {
+            background: #ffffff;
+            border-radius: 22px;
+            max-width: 430px;
+            width: 100%;
+            padding: 30px 26px 26px;
+            text-align: center;
+            box-shadow: 0 24px 60px -15px rgba(23, 20, 58, .35);
+            transform: scale(0.92) translateY(12px);
+            transition: transform .26s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .exit-modal-overlay.open .exit-modal-card {
+            transform: scale(1) translateY(0);
+        }
+        .exit-icon-wrap {
+            width: 62px;
+            height: 62px;
+            border-radius: 20px;
+            background: #fde8ec;
+            color: var(--red);
+            display: grid;
+            place-items: center;
+            margin: 0 auto 16px;
+            box-shadow: 0 8px 20px -6px rgba(196, 16, 46, .35);
+        }
+        .exit-modal-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+        .exit-modal-desc {
+            font-size: 13.5px;
+            color: var(--muted);
+            line-height: 1.55;
+            margin-bottom: 22px;
+        }
+        .exit-modal-desc strong {
+            color: var(--red);
+            font-weight: 700;
+        }
+        .exit-modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-modal-resume {
+            flex: 1.3;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--red-2), var(--red));
+            color: #fff;
+            border: none;
+            font-size: 13.5px;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 18px -4px rgba(196, 16, 46, .45);
+            transition: .2s;
+            font-family: inherit;
+        }
+        .btn-modal-resume:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 22px -4px rgba(196, 16, 46, .6);
+        }
+        .btn-modal-quit {
+            flex: 1;
+            height: 44px;
+            border-radius: 12px;
+            background: #f5ece8;
+            border: 1px solid var(--line);
+            color: #6d4252;
+            font-size: 13.5px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: .2s;
+        }
+        .btn-modal-quit:hover {
+            background: #edd8d2;
+            color: var(--red);
+        }
     </style>
 </head>
 <body>
 
 <header class="topbar">
     <div class="topbar-left">
-        <a href="{{ route('dashboard.quizzes') }}" class="back-btn" onclick="return confirm('Yakin ingin keluar? Progres quiz saat ini tidak akan tersimpan.')">
+        <button type="button" class="back-btn" id="btnOpenExitModal">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Keluar
-        </a>
+        </button>
         <div class="quiz-title-bar">
             {{ $quiz->title }}
             <span>{{ $quiz->questions->count() }} soal</span>
@@ -278,6 +387,31 @@
     </div>
 </form>
 
+<!-- Modal: Konfirmasi Keluar Quiz -->
+<div class="exit-modal-overlay" id="exitQuizModal" aria-hidden="true">
+    <div class="exit-modal-card">
+        <div class="exit-icon-wrap">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+        </div>
+        <h3 class="exit-modal-title">Yakin Ingin Keluar?</h3>
+        <p class="exit-modal-desc">
+            Progres pengerjaan quiz saat ini <strong>tidak akan tersimpan</strong>. Jawaban yang sudah kamu pilih akan hilang jika kamu keluar sekarang.
+        </p>
+        <div class="exit-modal-actions">
+            <button type="button" class="btn-modal-resume" id="btnResumeQuiz">
+                Lanjut Kerjakan
+            </button>
+            <a href="{{ route('dashboard.quizzes') }}" class="btn-modal-quit">
+                Ya, Keluar
+            </a>
+        </div>
+    </div>
+</div>
+
 <script>
     const totalQ   = {{ $quiz->questions->count() }};
     let cur        = 0;
@@ -331,6 +465,37 @@
         document.getElementById('time-taken').value = Math.round((Date.now()-start)/1000);
         document.getElementById('quiz-form').submit();
     }
+
+    // Exit Confirmation Modal Logic
+    const exitModal = document.getElementById('exitQuizModal');
+    const btnOpenExit = document.getElementById('btnOpenExitModal');
+    const btnResumeQuiz = document.getElementById('btnResumeQuiz');
+
+    if (btnOpenExit && exitModal) {
+        btnOpenExit.addEventListener('click', () => {
+            exitModal.classList.add('open');
+            exitModal.setAttribute('aria-hidden', 'false');
+        });
+        if (btnResumeQuiz) {
+            btnResumeQuiz.addEventListener('click', () => {
+                exitModal.classList.remove('open');
+                exitModal.setAttribute('aria-hidden', 'true');
+            });
+        }
+        exitModal.addEventListener('click', (e) => {
+            if (e.target === exitModal) {
+                exitModal.classList.remove('open');
+                exitModal.setAttribute('aria-hidden', 'true');
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && exitModal.classList.contains('open')) {
+                exitModal.classList.remove('open');
+                exitModal.setAttribute('aria-hidden', 'true');
+            }
+        });
+    }
+
     show(0);
 </script>
 </body>

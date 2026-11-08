@@ -114,6 +114,56 @@
         background: #f1fbf3;
     }
 
+    .btn-retry-exam {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--red-2), var(--red));
+        color: #fff !important;
+        font-size: 14px;
+        font-weight: 800;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        box-shadow: 0 8px 20px -4px rgba(0, 0, 0, .4);
+        transition: all .2s ease;
+    }
+    .result-hero.passed .btn-retry-exam {
+        background: rgba(255, 255, 255, .15);
+        border: 1px solid rgba(255, 255, 255, .3);
+        box-shadow: none;
+    }
+    .btn-retry-exam:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px -4px rgba(0, 0, 0, .5);
+        color: #fff !important;
+    }
+
+    .btn-history-exam {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, .15);
+        color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, .32);
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all .2s ease;
+        backdrop-filter: blur(8px);
+    }
+    .btn-history-exam:hover {
+        background: rgba(255, 255, 255, .25);
+        border-color: rgba(255, 255, 255, .55);
+        color: #ffffff !important;
+        transform: translateY(-2px);
+    }
+
     /* ── Section Breakdown Grid ── */
     .section-grid {
         display: grid;
@@ -325,11 +375,19 @@
                 </a>
             @endif
 
-            <a href="{{ route('jlpt.start') }}" class="button" style="background:rgba(255,255,255,.2); color:#fff; border:1px solid rgba(255,255,255,.3);" onclick="return confirm('Mulai simulasi ujian baru sekarang?')">
+            <button type="button" class="btn-retry-exam js-open-exam-modal">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="1 4 1 10 7 10"></polyline>
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                </svg>
                 Ulangi Ujian Simulasi
-            </a>
+            </button>
 
-            <a href="{{ route('jlpt.index') }}" class="button ghost" style="color:#fff; border-color:rgba(255,255,255,.3);">
+            <a href="{{ route('jlpt.index') }}" class="btn-history-exam">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="12 8 12 12 14 14"></polyline>
+                    <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"></path>
+                </svg>
                 Daftar Riwayat Ujian
             </a>
         </div>
@@ -445,5 +503,7 @@
         </div>
     @endforeach
 </div>
+
+@include('dashboard.jlpt.partials.start-modal')
 @endsection
 

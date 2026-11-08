@@ -285,6 +285,43 @@
         </article>
 
         <article class="overview-card">
+            <span class="symbol" style="background: rgba(245, 158, 11, 0.14); color: #d97706;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+            </span>
+            <h2>Kana Speed Match</h2>
+            <p>Mini game uji refleks membaca Hiragana, Katakana, dan Kanji dengan durasi kustom (3 - 60 detik).</p>
+            <a class="button" href="{{ route('speed-match.index') }}">
+                Main Game
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </article>
+
+        <article class="overview-card">
+            <span class="symbol" style="background: rgba(196, 16, 46, 0.14); color: var(--red);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 6h16"></path>
+                    <path d="M2 9h20"></path>
+                    <path d="M6 6v14"></path>
+                    <path d="M18 6v14"></path>
+                </svg>
+            </span>
+            <h2>Tanya Sensei (AI)</h2>
+            <p>Konsultasi tata bahasa, beda partikel, koreksi kalimat bahasa Jepang, dan kosakata dengan asisten virtual cerdas.</p>
+            <a class="button" href="{{ route('sensei.index') }}">
+                Mulai Tanya
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </article>
+
+        <article class="overview-card">
             <span class="symbol" style="background: rgba(196, 16, 46, 0.12); color: var(--red);">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>

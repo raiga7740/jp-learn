@@ -9,6 +9,8 @@ use App\Http\Controllers\DictionaryController;
 use App\Http\Controllers\FlashcardController;
 use App\Http\Controllers\JlptExamController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SenseiController;
+use App\Http\Controllers\SpeedMatchController;
 use App\Http\Controllers\WritingPracticeController;
 
 // Landing
@@ -45,6 +47,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/flashcards/save-card', [FlashcardController::class, 'saveCardProgress'])->name('flashcards.save-card');
     Route::get('/flashcards/{material:slug}', [FlashcardController::class, 'show'])->name('flashcards.show');
     Route::get('/quiz', [DashboardController::class, 'quizzes'])->name('dashboard.quizzes');
+    Route::get('/speed-match', [SpeedMatchController::class, 'index'])->name('speed-match.index');
+    Route::get('/tanya-sensei', [SenseiController::class, 'index'])->name('sensei.index');
+    Route::post('/tanya-sensei/chat', [SenseiController::class, 'chat'])->name('sensei.chat');
+    Route::post('/tanya-sensei/test-key', [SenseiController::class, 'testKey'])->name('sensei.test-key');
     Route::get('/progress', [DashboardController::class, 'progress'])->name('dashboard.progress');
 
     // Kamus Mini & Buku Kosakata Favorit

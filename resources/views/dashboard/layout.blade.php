@@ -50,21 +50,45 @@
         /* ── Sidebar ── */
         .sidebar {
             position: fixed;
-            inset: 0 auto 0 0;
+            top: 0;
+            bottom: 0;
+            left: 0;
             z-index: 100;
             width: var(--sidebar);
-            padding: 24px 16px;
+            height: 100vh;
+            height: 100dvh;
+            padding: 20px 14px 28px;
             color: #fff;
             background: var(--navy);
             display: flex;
             flex-direction: column;
             transition: transform .3s cubic-bezier(.4,0,.2,1);
+            overflow-y: auto;
+            overflow-x: hidden;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,.18) transparent;
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,.18);
+            border-radius: 999px;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,.35);
         }
         .sidebar-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 28px;
+            margin-bottom: 20px;
+            flex-shrink: 0;
         }
         .brand {
             display: flex;
@@ -101,12 +125,13 @@
         .sidebar-close-btn:hover { color: #fff; background: rgba(255,255,255,.1); }
 
         .nav-label {
-            margin: 18px 10px 8px;
+            margin: 14px 10px 6px;
             color: rgba(255,255,255,.36);
             font-size: 10px;
             font-weight: 800;
             letter-spacing: .14em;
             text-transform: uppercase;
+            flex-shrink: 0;
         }
         .nav-link {
             display: flex;
@@ -114,14 +139,15 @@
             gap: 12px;
             position: relative;
             margin-bottom: 3px;
-            padding: 10px 14px;
+            padding: 9px 12px;
             border: 1px solid transparent;
             border-radius: 12px;
             color: rgba(255,255,255,.62);
             font-weight: 600;
-            font-size: 13.5px;
+            font-size: 13px;
             text-decoration: none;
             transition: all .2s ease;
+            flex-shrink: 0;
         }
         .nav-link:hover {
             color: #fff;
@@ -156,8 +182,10 @@
 
         .sidebar-footer {
             margin-top: auto;
-            padding-top: 16px;
+            padding-top: 14px;
+            padding-bottom: 6px;
             border-top: 1px solid rgba(255,255,255,.1);
+            flex-shrink: 0;
         }
         .user-card {
             display: flex;
@@ -860,18 +888,26 @@
 
         /* ── Responsive Media Queries ── */
         @media (max-width: 900px) {
+            body.sidebar-open {
+                overflow: hidden;
+            }
             .sidebar {
                 transform: translateX(-100%);
+                width: 280px;
+                max-width: 86vw;
+                height: 100vh;
+                height: 100dvh;
+                padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
             }
             body.sidebar-open .sidebar {
                 transform: translateX(0);
-                box-shadow: 0 0 50px rgba(0,0,0,.5);
+                box-shadow: 0 0 60px rgba(0,0,0,.65);
             }
             .sidebar-close-btn { display: inline-flex; }
             .sidebar-toggle-btn { display: inline-flex; }
             .main { margin-left: 0; }
-            .topbar { padding: 12px 22px; }
-            .content { padding: 22px 22px 40px; }
+            .topbar { padding: 12px 20px; }
+            .content { padding: 22px 20px 40px; }
 
             .mobile-nav {
                 position: sticky;
@@ -880,10 +916,14 @@
                 display: flex;
                 gap: 8px;
                 overflow-x: auto;
-                padding: 10px 22px;
+                overflow-y: hidden;
+                padding: 10px 18px;
                 border-bottom: 1px solid var(--line);
                 background: rgba(255,248,246,.96);
-                backdrop-filter: blur(10px);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                -webkit-overflow-scrolling: touch;
+                scroll-behavior: smooth;
                 scrollbar-width: none;
             }
             .mobile-nav::-webkit-scrollbar { display: none; }
@@ -892,7 +932,7 @@
                 display: inline-flex;
                 align-items: center;
                 gap: 6px;
-                padding: 7px 14px;
+                padding: 7px 13px;
                 border: 1px solid var(--line);
                 border-radius: 999px;
                 color: #704657;
@@ -901,8 +941,9 @@
                 font-weight: 700;
                 text-decoration: none;
                 transition: .2s;
+                white-space: nowrap;
             }
-            .mobile-nav a svg { width: 14px; height: 14px; }
+            .mobile-nav a svg { width: 14px; height: 14px; flex-shrink: 0; }
             .mobile-nav a.active {
                 color: #fff;
                 border-color: var(--red);
@@ -913,15 +954,16 @@
         }
 
         @media (max-width: 600px) {
-            .topbar { padding: 10px 16px; gap: 10px; }
+            .topbar { padding: 10px 14px; gap: 8px; }
             .topbar p, .date { display: none; }
+            .topbar h1 { font-size: 15px; }
             .gami-chip .gami-chip-label { display: none; }
-            .gami-chip { padding: 7px 10px; }
+            .gami-chip { padding: 6px 9px; font-size: 11px; }
             .profile-btn-info { display: none; }
-            .profile-btn { padding: 4px; border-radius: 50%; }
+            .profile-btn { padding: 3px; border-radius: 50%; }
             .profile-chevron { display: none; }
-            .mobile-nav { padding: 8px 16px; top: 57px; }
-            .content { padding: 18px 16px 36px; }
+            .mobile-nav { padding: 8px 14px; top: 57px; }
+            .content { padding: 16px 14px 36px; }
             .hero { padding: 22px 20px; }
             .hero h2 { font-size: 20px; }
             .stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -1010,6 +1052,18 @@
             </span>
             Percakapan
         </a>
+        <a href="{{ route('sensei.index') }}" class="nav-link {{ request()->routeIs('sensei.*') ? 'active' : '' }}">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <!-- Torii Gate / Sensei Icon -->
+                    <path d="M4 6h16"></path>
+                    <path d="M2 9h20"></path>
+                    <path d="M6 6v14"></path>
+                    <path d="M18 6v14"></path>
+                </svg>
+            </span>
+            Tanya Sensei (AI)
+        </a>
         <a href="{{ route('dictionary.index') }}" class="nav-link {{ request()->routeIs('dictionary.*') ? 'active' : '' }}">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1029,6 +1083,14 @@
                 </svg>
             </span>
             Quiz & Latihan
+        </a>
+        <a href="{{ route('speed-match.index') }}" class="nav-link {{ request()->routeIs('speed-match.*') ? 'active' : '' }}">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+            </span>
+            Speed Match
         </a>
         <a href="{{ route('jlpt.index') }}" class="nav-link {{ request()->routeIs('jlpt.*') ? 'active' : '' }}">
             <span class="nav-icon">
@@ -1063,7 +1125,7 @@
         </a>
 
         <span class="nav-label">Akun</span>
-        <a href="{{ route('profile.show') }}" class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}">
+        <a href="{{ route('profile.show') }}" class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}" style="margin-bottom: 12px;">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -1214,6 +1276,17 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="{{ route('sensei.index') }}" class="dropdown-item" role="menuitem">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 6h16"></path>
+                                        <path d="M2 9h20"></path>
+                                        <path d="M6 6v14"></path>
+                                        <path d="M18 6v14"></path>
+                                    </svg>
+                                    Tanya Sensei (AI Chatbot)
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('dictionary.index') }}" class="dropdown-item" role="menuitem">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
@@ -1230,6 +1303,14 @@
                                         <line x1="12" y1="17" x2="12.01" y2="17"></line>
                                     </svg>
                                     Quiz & Latihan
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('speed-match.index') }}" class="dropdown-item" role="menuitem">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                                    </svg>
+                                    Speed Match (Mini Game)
                                 </a>
                             </li>
                             <li>
@@ -1303,6 +1384,15 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                 Percakapan
             </a>
+            <a href="{{ route('sensei.index') }}" class="{{ request()->routeIs('sensei.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 6h16"></path>
+                    <path d="M2 9h20"></path>
+                    <path d="M6 6v14"></path>
+                    <path d="M18 6v14"></path>
+                </svg>
+                Tanya Sensei
+            </a>
             <a href="{{ route('dictionary.index') }}" class="{{ request()->routeIs('dictionary.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
                 Kamus
@@ -1310,6 +1400,10 @@
             <a href="{{ route('dashboard.quizzes') }}" class="{{ request()->routeIs('dashboard.quizzes') || request()->routeIs('quiz.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                 Quiz
+            </a>
+            <a href="{{ route('speed-match.index') }}" class="{{ request()->routeIs('speed-match.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Speed Match
             </a>
             <a href="{{ route('jlpt.index') }}" class="{{ request()->routeIs('jlpt.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
