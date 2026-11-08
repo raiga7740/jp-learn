@@ -3,8 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JP Learn — Kuasai Huruf Jepang dengan Metode Flashcard Adaptif</title>
-    <meta name="description" content="Kuasai 46 Hiragana, 46 Katakana, dan ratusan Kanji dengan flashcard adaptif, spaced repetition, dan audio penutur asli.">
+    @include('partials.seo', [
+        'title' => 'JP Learn — Kuasai Huruf & Belajar Bahasa Jepang Interaktif',
+        'description' => 'Kuasai 46 Hiragana, 46 Katakana, Kanji, dan kosakata JLPT N5 dengan flashcard adaptif, spaced repetition, dan audio penutur asli.',
+        'keywords' => 'belajar bahasa jepang, hiragana, katakana, kanji, jlpt n5, flashcard bahasa jepang, hafalan huruf jepang, simulasi jlpt n5, percakapan bahasa jepang',
+        'canonical' => url('/'),
+        'ogType' => 'website',
+    ])
+    @include('partials.schema', [
+        'faqItems' => [
+            [
+                'question' => 'Bagaimana cara cepat menghafal Hiragana dan Katakana di JP Learn?',
+                'answer' => 'JP Learn menggunakan flashcard adaptif dengan algoritma spaced repetition. Sistem secara cerdas mengulang kartu yang sulit diingat pada interval optimal sehingga retensi hafalan mencapai lebih dari 95%.'
+            ],
+            [
+                'question' => 'Apakah materi di JP Learn cocok untuk pemula dan persiapan JLPT N5?',
+                'answer' => 'Sangat cocok. JP Learn dirancang khusus untuk pemula otodidak mulai dari pengenalan Hiragana, Katakana, Kanji dasar, kosakata bergambar, hingga simulasi ujian resmi JLPT N5 dengan penilaian otomatis.'
+            ],
+            [
+                'question' => 'Apakah JP Learn gratis digunakan?',
+                'answer' => 'Ya, Anda dapat belajar dan mengakses modul huruf dasar, flashcard adaptif, dan latihan secara gratis langsung melalui browser tanpa instalasi tambahan.'
+            ],
+            [
+                'question' => 'Apakah tersedia audio penutur asli untuk latihan pelafalan?',
+                'answer' => 'Ya, setiap kartu huruf, kosakata, dan contoh percakapan dilengkapi contoh audio penutur asli Jepang untuk melatih pendengaran dan aksen alami.'
+            ]
+        ]
+    ])
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
@@ -330,6 +355,7 @@
             <li><a href="#fitur" id="nav-fitur">Fitur</a></li>
             <li><a href="#matrix" id="nav-matrix">Matriks</a></li>
             <li><a href="#testimoni" id="nav-testimoni">Testimoni</a></li>
+            <li><a href="{{ route('updates.index') }}" id="nav-updates">Pembaruan <span style="font-size:10px;font-weight:800;background:var(--red);color:#fff;padding:2px 6px;border-radius:999px;margin-left:2px">v2.4</span></a></li>
         </ul>
         <div class="nav-actions">
             @auth
@@ -601,6 +627,7 @@
             <div class="footer-col">
                 <h4>Info</h4>
                 <ul>
+                    <li><a href="{{ route('updates.index') }}">Catatan Rilis & Versi <span style="font-size: 10px; background: var(--red); color: #fff; padding: 1px 6px; border-radius: 999px; margin-left: 4px;">v2.4.0</span></a></li>
                     <li><a href="#">Tentang Kami</a></li>
                     <li><a href="#">Blog</a></li>
                     <li><a href="#">FAQ</a></li>
@@ -637,7 +664,10 @@
             toggle.setAttribute('aria-expanded', open);
         });
         links.forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); toggle.setAttribute('aria-expanded', false); }));
-        const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+        const targets = links
+            .filter(a => a.getAttribute('href') && a.getAttribute('href').startsWith('#'))
+            .map(a => document.querySelector(a.getAttribute('href')))
+            .filter(Boolean);
         const io = new IntersectionObserver(entries => {
             entries.forEach(e => {
                 if (!e.isIntersecting) return;

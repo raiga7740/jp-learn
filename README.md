@@ -52,6 +52,7 @@
 * Dilengkapi label part-of-speech, romaji cara baca, dan contoh kalimat aplikatif.
 
 ### 5. Gamifikasi & Progres Belajar
+* **Tantangan Harian (Daily Challenge & Streak Booster):** 3 misi kilat harian (Kosakata, Kanji N5, dan Tata Bahasa) yang berotasi otomatis setiap hari dengan tema mingguan, audio native, hitung mundur reset, serta bonus +30 XP untuk menjaga api streak belajar.
 * **Sistem XP & Level:** Naikkan level dari *Pemula (N5)* hingga level mahir dengan menyelesaikan aktivitas belajar.
 * **Streak Tracker:** Melacak konsistensi belajar harian.
 * **Badge Pencapaian:** Penghargaan visual atas pencapaian target belajar tertentu.

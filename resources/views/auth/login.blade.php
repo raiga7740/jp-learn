@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk — JP Learn</title>
+    @include('partials.seo', [
+        'title' => 'Masuk ke Akun — JP Learn',
+        'description' => 'Masuk ke akun JP Learn Anda untuk melanjutkan pembelajaran huruf Hiragana, Katakana, Kanji, dan simulasi JLPT.',
+        'canonical' => route('login'),
+        'robots' => 'noindex, follow',
+    ])
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
@@ -178,7 +183,6 @@
                 <label class="check-label">
                     <input type="checkbox" name="remember"> Ingat saya
                 </label>
-                <a href="#" class="forgot">Lupa sandi?</a>
             </div>
 
             <button type="submit" class="btn-submit">Masuk →</button>

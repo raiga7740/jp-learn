@@ -158,7 +158,7 @@
 @endsection
 
 @section('content')
-    <section class="hero">
+    <section class="hero" data-tour="materials-hero">
         <span class="eyebrow">Belajar · 学習</span>
         <h2>Materi Bahasa Jepang</h2>
         <p>{{ $completedCount }} dari {{ $totalMaterials }} materi telah selesai. Pilih materi untuk mulai belajar atau ulangi materi yang telah kamu pelajari.</p>
@@ -192,7 +192,7 @@
             <div class="material-list">
                 @foreach($materials as $material)
                     @php($progress = $progresses->get($material->id))
-                    <article class="material">
+                    <article class="material" {!! $loop->first ? 'data-tour="materials-first-card"' : '' !!}>
                         <div class="material-icon">
                             {{ match($material->category) {
                                 'hiragana' => 'あ',

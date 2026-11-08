@@ -1,2 +1,35 @@
+# Robots.txt for JP Learn
+# Google Search Console & Search Engine Crawlers
+
 User-agent: *
-Disallow:
+Allow: /
+Allow: /pembaruan
+Allow: /login
+Allow: /register
+Allow: /images/
+Allow: /css/
+Allow: /js/
+Allow: /favicon*
+
+# Disallow private / authenticated app routes to prevent crawl indexation errors
+Disallow: /dashboard
+Disallow: /materi
+Disallow: /percakapan
+Disallow: /latihan-menulis
+Disallow: /flashcards
+Disallow: /quiz
+Disallow: /tantangan-harian
+Disallow: /speed-match
+Disallow: /susun-kalimat
+Disallow: /tanya-sensei
+Disallow: /progress
+Disallow: /papan-peringkat
+Disallow: /kamus
+Disallow: /simulasi-jlpt
+Disallow: /profil
+Disallow: /aktivitas
+Disallow: /api/
+Disallow: /onboarding/
+
+# XML Sitemap
+Sitemap: /sitemap.xml

@@ -94,6 +94,101 @@
         align-self: flex-start;
     }
 
+    /* ── Daily Challenge Card on Dashboard ── */
+    .daily-challenge-card {
+        background: linear-gradient(135deg, #fff 0%, #fff8f6 100%);
+        border: 1.5px solid var(--line);
+        border-radius: var(--radius);
+        padding: 22px 26px;
+        margin-bottom: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+    }
+    .daily-challenge-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 6px;
+        height: 100%;
+        background: linear-gradient(180deg, var(--red) 0%, var(--red-2, #e8234f) 100%);
+    }
+    .daily-challenge-card.completed::before {
+        background: #20c997;
+    }
+    .daily-challenge-content {
+        flex: 1;
+    }
+    .daily-challenge-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        margin-bottom: 8px;
+    }
+    .daily-challenge-badge.active {
+        background: #fde8ec;
+        color: var(--red);
+    }
+    .daily-challenge-badge.done {
+        background: #e6fcf5;
+        color: #087f5b;
+    }
+    .daily-challenge-title {
+        font-size: 17px;
+        font-weight: 900;
+        color: var(--ink);
+        margin: 0 0 6px;
+    }
+    .daily-challenge-desc {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.5;
+        margin: 0 0 12px;
+    }
+    .daily-challenge-missions-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .mission-indicator-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--ink);
+    }
+    .mission-dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #f1eae6;
+        display: grid;
+        place-items: center;
+        font-size: 10px;
+        font-weight: 800;
+        color: var(--muted);
+    }
+    .mission-indicator-item.done .mission-dot {
+        background: #20c997;
+        color: #fff;
+    }
+    .daily-challenge-btn-wrap {
+        flex-shrink: 0;
+    }
+
     @media (max-width: 960px) {
         .overview {
             grid-template-columns: 1fr;
@@ -101,11 +196,20 @@
         .overview-card {
             padding: 20px;
         }
+        .daily-challenge-card {
+            flex-direction: column;
+            align-items: stretch;
+            padding: 20px;
+        }
+        .daily-challenge-btn-wrap .button {
+            width: 100%;
+            justify-content: center;
+        }
     }
 @endsection
 
 @section('content')
-    <section class="hero">
+    <section class="hero" data-tour="hero-progress">
         <span class="eyebrow">いらっしゃいませ · Selamat Datang</span>
         <h2>Halo, {{ ($user ?? Auth::user())->name }}!</h2>
         <p>Kamu sudah menyelesaikan {{ $completedCount }} dari {{ $totalMaterials }} materi pembelajaran. Terus tingkatkan kemampuan bahasa Jepangmu setiap hari!</p>
@@ -121,7 +225,7 @@
         </div>
     </section>
 
-    <section class="stats" aria-label="Ringkasan belajar">
+    <section class="stats" data-tour="stats-overview" aria-label="Ringkasan belajar">
         <div class="stat">
             <span class="stat-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -176,6 +280,84 @@
     </section>
 
     @include('dashboard.partials.gamification-card')
+
+    @if(isset($dailyChallengeData))
+    <div class="daily-challenge-card {{ ($dailyStatus['is_completed'] ?? false) ? 'completed' : '' }}" data-tour="daily-challenge">
+        <div class="daily-challenge-content">
+            @if($dailyStatus['is_completed'] ?? false)
+                <span class="daily-challenge-badge done">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Tuntas Hari Ini &bull; +30 XP Diklaim
+                </span>
+                <h3 class="daily-challenge-title">Tantangan Harian: {{ $dailyChallengeData['theme'] }}</h3>
+                <p class="daily-challenge-desc">
+                    Kerja bagus! Kamu sudah menyelesaikan seluruh 3 misi harian hari ini dan streak belajarmu aman.
+                </p>
+                <div class="daily-challenge-missions-row">
+                    <span class="mission-indicator-item done">
+                        <span class="mission-dot">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </span>
+                        Kosakata
+                    </span>
+                    <span class="mission-indicator-item done">
+                        <span class="mission-dot">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </span>
+                        Kanji N5
+                    </span>
+                    <span class="mission-indicator-item done">
+                        <span class="mission-dot">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </span>
+                        Tata Bahasa
+                    </span>
+                </div>
+            @else
+                <span class="daily-challenge-badge active">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <circle cx="12" cy="12" r="5"></circle>
+                    </svg>
+                    Tantangan Harian &bull; Bonus +30 XP
+                </span>
+                <h3 class="daily-challenge-title">Tantangan Harian: {{ $dailyChallengeData['theme'] }}</h3>
+                <p class="daily-challenge-desc">
+                    {{ $dailyChallengeData['subtitle'] }} Luangkan 2 menit untuk menyelesaikan 3 soal kilat dan amankan streak!
+                </p>
+                <div class="daily-challenge-missions-row">
+                    <span class="mission-indicator-item">
+                        <span class="mission-dot">1</span>
+                        Kosakata N5
+                    </span>
+                    <span class="mission-indicator-item">
+                        <span class="mission-dot">2</span>
+                        Kanji N5
+                    </span>
+                    <span class="mission-indicator-item">
+                        <span class="mission-dot">3</span>
+                        Tata Bahasa
+                    </span>
+                </div>
+            @endif
+        </div>
+        <div class="daily-challenge-btn-wrap">
+            <a class="button" href="{{ route('daily-challenge.index') }}" style="{{ ($dailyStatus['is_completed'] ?? false) ? 'background:#20c997; border-color:#20c997; box-shadow:0 6px 18px -4px rgba(32,201,151,.4);' : '' }}">
+                @if($dailyStatus['is_completed'] ?? false)
+                    <span>Review Tantangan</span>
+                @else
+                    <span>Mulai Tantangan (+30 XP)</span>
+                @endif
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </div>
+    </div>
+    @endif
 
     <section class="overview">
         <article class="overview-card">

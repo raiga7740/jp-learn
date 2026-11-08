@@ -26,6 +26,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
+            $request->session()->forget('is_new_registration');
             return redirect()->intended(route('dashboard'));
         }
 
@@ -56,8 +57,15 @@ class AuthController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
+        try {
+            $user->forceFill(['has_completed_onboarding' => false])->saveQuietly();
+        } catch (\Throwable $e) {
+            // Gracefully ignore if database column does not exist yet
+        }
+
         Auth::login($user);
         $request->session()->regenerate();
+        $request->session()->put('is_new_registration', true);
 
         return redirect()->route('dashboard');
     }

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
     <title>{{ $pageTitle ?? 'Dashboard' }} — JP Learn</title>
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
@@ -13,6 +14,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@500;700;900&display=swap" rel="stylesheet">
+    <!-- Driver.js & Interactive Onboarding Guided Tour (Self-Contained Styles) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.css">
+    @include('dashboard.partials.guided-tour-styles')
     <style>
         :root {
             --bg: #fff8f6;
@@ -991,7 +995,7 @@
     <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
 
     <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar" aria-label="Navigasi sidebar">
+    <aside class="sidebar" id="sidebar" data-tour="sidebar-nav" aria-label="Navigasi sidebar">
         <div class="sidebar-header">
             <a href="{{ route('dashboard') }}" class="brand" title="JP Learn">
                 <img src="{{ asset('images/logo-light.png') }}" alt="JP Learn" style="height: 40px; max-width: 175px; object-fit: contain;">
@@ -1005,7 +1009,7 @@
         </div>
 
         <span class="nav-label">Menu</span>
-        <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+        <a href="{{ route('dashboard') }}" data-tour="nav-dashboard" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -1016,7 +1020,7 @@
         </a>
 
         <span class="nav-label">Belajar</span>
-        <a href="{{ route('dashboard.materials') }}" class="nav-link {{ request()->routeIs('dashboard.materials') || request()->routeIs('material.*') ? 'active' : '' }}">
+        <a href="{{ route('dashboard.materials') }}" data-tour="nav-materials" class="nav-link {{ request()->routeIs('dashboard.materials') || request()->routeIs('material.*') ? 'active' : '' }}">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
@@ -1025,7 +1029,7 @@
             </span>
             Materi
         </a>
-        <a href="{{ route('flashcards.index') }}" class="nav-link {{ request()->routeIs('flashcards.*') ? 'active' : '' }}">
+        <a href="{{ route('flashcards.index') }}" data-tour="nav-flashcards" class="nav-link {{ request()->routeIs('flashcards.*') ? 'active' : '' }}">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
@@ -1034,7 +1038,7 @@
             </span>
             Flashcard
         </a>
-        <a href="{{ route('writing.index') }}" class="nav-link {{ request()->routeIs('writing.*') ? 'active' : '' }}">
+        <a href="{{ route('writing.index') }}" data-tour="nav-writing" class="nav-link {{ request()->routeIs('writing.*') ? 'active' : '' }}">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
@@ -1045,7 +1049,7 @@
             </span>
             Latihan Menulis
         </a>
-        <a href="{{ route('conversation.index') }}" class="nav-link {{ request()->routeIs('conversation.*') ? 'active' : '' }}">
+        <a href="{{ route('conversation.index') }}" data-tour="nav-conversation" class="nav-link {{ request()->routeIs('conversation.*') ? 'active' : '' }}">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -1053,7 +1057,7 @@
             </span>
             Percakapan
         </a>
-        <a href="{{ route('sensei.index') }}" class="nav-link {{ request()->routeIs('sensei.*') ? 'active' : '' }}">
+        <a href="{{ route('sensei.index') }}" data-tour="nav-sensei" class="nav-link {{ request()->routeIs('sensei.*') ? 'active' : '' }}">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <!-- Torii Gate / Sensei Icon -->
@@ -1065,7 +1069,7 @@
             </span>
             Tanya Sensei (AI)
         </a>
-        <a href="{{ route('dictionary.index') }}" class="nav-link {{ request()->routeIs('dictionary.*') ? 'active' : '' }}">
+        <a href="{{ route('dictionary.index') }}" data-tour="nav-dictionary" class="nav-link {{ request()->routeIs('dictionary.*') ? 'active' : '' }}">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
@@ -1075,7 +1079,7 @@
             </span>
             Kamus & Kosakata
         </a>
-        <a href="{{ route('dashboard.quizzes') }}" class="nav-link {{ request()->routeIs('dashboard.quizzes') || request()->routeIs('quiz.*') ? 'active' : '' }}">
+        <a href="{{ route('dashboard.quizzes') }}" data-tour="nav-quizzes" class="nav-link {{ request()->routeIs('dashboard.quizzes') || request()->routeIs('quiz.*') ? 'active' : '' }}">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -1085,7 +1089,17 @@
             </span>
             Quiz & Latihan
         </a>
-        <a href="{{ route('speed-match.index') }}" class="nav-link {{ request()->routeIs('speed-match.*') ? 'active' : '' }}">
+        <a href="{{ route('daily-challenge.index') }}" data-tour="nav-daily-challenge" class="nav-link {{ request()->routeIs('daily-challenge.*') ? 'active' : '' }}">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <circle cx="12" cy="12" r="1.5" fill="currentColor"></circle>
+                </svg>
+            </span>
+            Tantangan Harian
+        </a>
+        <a href="{{ route('speed-match.index') }}" data-tour="nav-speed-match" class="nav-link {{ request()->routeIs('speed-match.*') ? 'active' : '' }}">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
@@ -1093,7 +1107,7 @@
             </span>
             Speed Match
         </a>
-        <a href="{{ route('sentence-builder.index') }}" class="nav-link {{ request()->routeIs('sentence-builder.*') ? 'active' : '' }}">
+        <a href="{{ route('sentence-builder.index') }}" data-tour="nav-sentence-builder" class="nav-link {{ request()->routeIs('sentence-builder.*') ? 'active' : '' }}">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
@@ -1104,7 +1118,7 @@
             </span>
             Susun Kalimat
         </a>
-        <a href="{{ route('jlpt.index') }}" class="nav-link {{ request()->routeIs('jlpt.*') ? 'active' : '' }}">
+        <a href="{{ route('jlpt.index') }}" data-tour="nav-jlpt" class="nav-link {{ request()->routeIs('jlpt.*') ? 'active' : '' }}">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -1113,7 +1127,7 @@
             </span>
             Simulasi JLPT N5
         </a>
-        <a href="{{ route('dashboard.progress') }}" class="nav-link {{ request()->routeIs('dashboard.progress') ? 'active' : '' }}">
+        <a href="{{ route('dashboard.progress') }}" data-tour="nav-progress" class="nav-link {{ request()->routeIs('dashboard.progress') ? 'active' : '' }}">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="20" x2="18" y2="10"></line>
@@ -1122,6 +1136,30 @@
                 </svg>
             </span>
             Progres Belajar
+        </a>
+        <a href="{{ route('leaderboard.index') }}" data-tour="nav-leaderboard" class="nav-link {{ request()->routeIs('leaderboard.*') ? 'active' : '' }}">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                    <path d="M4 22h16"></path>
+                    <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path>
+                </svg>
+            </span>
+            Papan Peringkat
+        </a>
+
+        <span class="nav-label">Informasi & Bantuan</span>
+        <a href="{{ route('updates.index') }}" data-tour="nav-updates" class="nav-link {{ request()->routeIs('updates.*') ? 'active' : '' }}">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+            </span>
+            <span style="flex: 1;">Info & Versi</span>
+            <span style="font-size: 10px; font-weight: 800; background: rgba(255,107,138,.24); color: #ff9aad; border: 1px solid rgba(255,107,138,.3); padding: 1px 6px; border-radius: 999px;">v2.4</span>
         </a>
 
         <span class="nav-label">Navigasi Luar</span>
@@ -1166,6 +1204,11 @@
                     Keluar
                 </button>
             </form>
+            <div style="margin-top: 10px; text-align: center; font-size: 11px; color: rgba(255,255,255,.4);">
+                <a href="{{ route('updates.index') }}" title="Lihat Catatan Rilis & Info Versi" style="color: inherit; text-decoration: none; transition: .2s;" onmouseover="this.style.color='#ff9aad'" onmouseout="this.style.color='rgba(255,255,255,.4)'">
+                    JP Learn <strong style="color: rgba(255,255,255,.7);">v2.4.0</strong> • Edisi Sakura
+                </a>
+            </div>
         </div>
     </aside>
 
@@ -1187,6 +1230,23 @@
             </div>
 
             <div class="topbar-right">
+                <!-- Tombol Versi & Apa yang Baru -->
+                <button type="button" class="nav-version-btn" onclick="openWhatsNewModal()" title="Lihat apa yang baru di versi v2.4.0" style="display: inline-flex; align-items: center; gap: 5px; padding: 0 11px; height: 32px; border-radius: 999px; background: #fff8f6; border: 1.5px solid #f8cbd4; color: #c4102e; font-size: 11.5px; font-weight: 800; cursor: pointer; line-height: 1; font-family: inherit; transition: .2s;">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                    <span>v2.4.0</span>
+                </button>
+
+                <!-- Tombol Panduan Tour Interaktif -->
+                <button type="button" class="nav-tour-btn" onclick="startGuidedTour(true)" title="Mulai Panduan Website" style="display: inline-flex; align-items: center; gap: 6px; padding: 0 14px; height: 32px; border-radius: 999px; background: #ffffff; border: 1.5px solid var(--line, #f0d5d0); color: var(--ink, #1a0a0e); font-size: 12.5px; font-weight: 700; cursor: pointer; line-height: 1; font-family: inherit;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                    </svg>
+                    <span class="nav-tour-label">Panduan</span>
+                </button>
+
                 <div class="gami-chips">
                     <a href="{{ route('dashboard.progress') }}" class="gami-chip streak {{ $gamiStats['streak'] > 0 ? '' : 'off' }}" title="Streak belajar harian">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2s5 4.5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5.3 1.6 1.2 2.4 2 2.5C11 7 10 4 12 2z"/></svg>
@@ -1209,7 +1269,7 @@
                 </span>
 
                 <!-- Profile Dropdown in Navbar -->
-                <div class="profile-menu" id="profileMenu">
+                <div class="profile-menu" id="profileMenu" data-tour="topbar-profile">
                     <button type="button" class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
                         <div class="avatar">{{ $initial }}</div>
                         <span class="profile-btn-info">
@@ -1241,6 +1301,16 @@
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
                                     Edit Profil
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('updates.index') }}" class="dropdown-item" role="menuitem">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                    </svg>
+                                    Info Pembaruan & Versi (v2.4)
                                 </a>
                             </li>
                             <li>
@@ -1345,6 +1415,17 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="{{ route('leaderboard.index') }}" class="dropdown-item" role="menuitem">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                                        <path d="M4 22h16"></path>
+                                        <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path>
+                                    </svg>
+                                    Papan Peringkat
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('landing') }}" class="dropdown-item" role="menuitem">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="12" cy="12" r="10"></circle>
@@ -1353,6 +1434,15 @@
                                     </svg>
                                     Beranda Utama
                                 </a>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item" onclick="startGuidedTour(true)" role="menuitem" style="width: 100%; text-align: left; background: none; border: none; font-family: inherit; cursor: pointer; color: inherit;">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                                    </svg>
+                                    Panduan Website (Tour)
+                                </button>
                             </li>
                         </ul>
 
@@ -1413,6 +1503,10 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                 Quiz
             </a>
+            <a href="{{ route('daily-challenge.index') }}" class="{{ request()->routeIs('daily-challenge.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle></svg>
+                Tantangan
+            </a>
             <a href="{{ route('speed-match.index') }}" class="{{ request()->routeIs('speed-match.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                 Speed Match
@@ -1428,6 +1522,10 @@
             <a href="{{ route('dashboard.progress') }}" class="{{ request()->routeIs('dashboard.progress') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                 Progres
+            </a>
+            <a href="{{ route('leaderboard.index') }}" class="{{ request()->routeIs('leaderboard.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path></svg>
+                Peringkat
             </a>
         </nav>
 
@@ -1488,6 +1586,36 @@
         })();
     </script>
     @include('dashboard.partials.xp-toast')
+    @include('dashboard.partials.onboarding-modal')
+
+    <!-- Interactive Onboarding Guided Tour Config & Scripts -->
+    <script>
+        window.JpTourConfig = {
+            routes: {
+                dashboard: "{{ route('dashboard') }}",
+                materials: "{{ route('dashboard.materials') }}",
+                flashcards: "{{ route('flashcards.index') }}",
+                writing: "{{ route('writing.index') }}",
+                conversation: "{{ route('conversation.index') }}",
+                sensei: "{{ route('sensei.index') }}",
+                dictionary: "{{ route('dictionary.index') }}",
+                quizzes: "{{ route('dashboard.quizzes') }}",
+                dailyChallenge: "{{ route('daily-challenge.index') }}",
+                speedMatch: "{{ route('speed-match.index') }}",
+                sentenceBuilder: "{{ route('sentence-builder.index') }}",
+                jlpt: "{{ route('jlpt.index') }}",
+                progress: "{{ route('dashboard.progress') }}",
+                leaderboard: "{{ route('leaderboard.index') }}",
+                complete: "{{ route('onboarding.complete') }}",
+                reset: "{{ route('onboarding.reset') }}",
+            },
+            hasCompleted: {{ (Auth::check() && (Auth::user()->has_completed_onboarding ?? false)) ? 'true' : 'false' }},
+            csrfToken: "{{ csrf_token() }}",
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.js.iife.js"></script>
+    @include('dashboard.partials.guided-tour-script')
+    @include('dashboard.partials.whats-new-modal')
     @yield('scripts')
 </body>
 </html>

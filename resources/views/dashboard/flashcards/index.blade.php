@@ -295,7 +295,7 @@
 @endsection
 
 @section('content')
-    <div class="flashcard-hero">
+    <div class="flashcard-hero" data-tour="flashcards-hero">
         <span class="eyebrow">SPACED REPETITION SYSTEM (SRS)</span>
         <h2>Latih Daya Ingat Permanen dengan Flashcard SRS</h2>
         <p>Setiap kartu yang kamu hafal akan dijadwalkan ulang secara otomatis pada interval waktu optimal (1 hari, 3 hari, 7 hari, dst) agar tersimpan kuat di memori jangka panjang.</p>
@@ -303,7 +303,7 @@
 
     <!-- SRS Daily Review Action Banner -->
     @if(($totalDueOverall ?? 0) > 0)
-        <div class="srs-banner">
+        <div class="srs-banner" data-tour="flashcards-srs-banner">
             <div class="srs-banner-left">
                 <div class="srs-banner-icon">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -323,7 +323,7 @@
             </a>
         </div>
     @else
-        <div class="srs-banner all-done">
+        <div class="srs-banner all-done" data-tour="flashcards-srs-banner">
             <div class="srs-banner-left">
                 <div class="srs-banner-icon">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -404,7 +404,7 @@
         </div>
     </div>
 
-    <div class="deck-grid">
+    <div class="deck-grid" data-tour="flashcards-deck-list">
         @foreach($decks as $deck)
             @php($mat = $deck['material'])
             <article class="deck-card">

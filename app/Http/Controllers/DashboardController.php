@@ -7,6 +7,7 @@ use App\Models\Quiz;
 use App\Models\QuizResult;
 use App\Models\User;
 use App\Models\UserProgress;
+use App\Services\DailyChallengeService;
 use App\Services\GamificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,8 +16,10 @@ use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function __construct(private GamificationService $gamification)
-    {
+    public function __construct(
+        private GamificationService $gamification,
+        private DailyChallengeService $dailyChallengeService
+    ) {
     }
 
     public function index(): View
@@ -24,8 +27,10 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         return view('dashboard.index', [
-            'user' => $user,
-            'gami' => $this->gamification->stats($user),
+            'user'               => $user,
+            'gami'               => $this->gamification->stats($user),
+            'dailyChallengeData' => $this->dailyChallengeService->getChallengesForDate(),
+            'dailyStatus'        => $this->dailyChallengeService->checkDailyStatus($user),
             ...$this->learningSummary($user),
         ]);
     }

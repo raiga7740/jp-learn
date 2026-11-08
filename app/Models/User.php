@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'has_completed_onboarding'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -32,6 +32,7 @@ class User extends Authenticatable
             'current_streak' => 'integer',
             'longest_streak' => 'integer',
             'last_activity_date' => 'date',
+            'has_completed_onboarding' => 'boolean',
         ];
     }
 

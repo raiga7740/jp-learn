@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar — JP Learn</title>
+    @include('partials.seo', [
+        'title' => 'Daftar Akun Baru — JP Learn',
+        'description' => 'Daftar akun gratis di JP Learn. Mulai kuasai huruf Jepang Hiragana, Katakana, dan Kanji dengan metode flashcard spaced repetition.',
+        'canonical' => route('register'),
+        'robots' => 'noindex, follow',
+    ])
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">

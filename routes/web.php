@@ -4,20 +4,35 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\DailyChallengeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DictionaryController;
 use App\Http\Controllers\FlashcardController;
 use App\Http\Controllers\JlptExamController;
+use App\Http\Controllers\LeaderboardController;
+use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SenseiController;
 use App\Http\Controllers\SentenceBuilderController;
+use App\Http\Controllers\SeoController;
 use App\Http\Controllers\SpeedMatchController;
+use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\WritingPracticeController;
+
+// SEO & Google Search Console
+Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('seo.sitemap');
+Route::get('/google{code}.html', [SeoController::class, 'googleVerification'])
+    ->where('code', '[a-zA-Z0-9_\-]+')
+    ->name('seo.google-verification');
 
 // Landing
 Route::get('/', function () {
     return view('landing');
 })->name('landing');
+
+// Info Pembaruan & Versi (Catatan Rilis & Roadmap)
+Route::get('/pembaruan',             [UpdateController::class, 'index'])->name('updates.index');
+Route::get('/api/pembaruan/terkini', [UpdateController::class, 'latest'])->name('updates.latest');
 
 // Auth (guest only)
 Route::middleware('guest')->group(function () {
@@ -48,12 +63,19 @@ Route::middleware('auth')->group(function () {
     Route::post('/flashcards/save-card', [FlashcardController::class, 'saveCardProgress'])->name('flashcards.save-card');
     Route::get('/flashcards/{material:slug}', [FlashcardController::class, 'show'])->name('flashcards.show');
     Route::get('/quiz', [DashboardController::class, 'quizzes'])->name('dashboard.quizzes');
+    Route::get('/tantangan-harian', [DailyChallengeController::class, 'index'])->name('daily-challenge.index');
+    Route::post('/tantangan-harian/selesai', [DailyChallengeController::class, 'complete'])->name('daily-challenge.complete');
     Route::get('/speed-match', [SpeedMatchController::class, 'index'])->name('speed-match.index');
     Route::get('/susun-kalimat', [SentenceBuilderController::class, 'index'])->name('sentence-builder.index');
     Route::get('/tanya-sensei', [SenseiController::class, 'index'])->name('sensei.index');
     Route::post('/tanya-sensei/chat', [SenseiController::class, 'chat'])->name('sensei.chat');
     Route::post('/tanya-sensei/test-key', [SenseiController::class, 'testKey'])->name('sensei.test-key');
     Route::get('/progress', [DashboardController::class, 'progress'])->name('dashboard.progress');
+    Route::get('/papan-peringkat', [LeaderboardController::class, 'index'])->name('leaderboard.index');
+
+    // Interactive Onboarding Guided Tour
+    Route::post('/onboarding/selesai', [OnboardingController::class, 'complete'])->name('onboarding.complete');
+    Route::post('/onboarding/reset',   [OnboardingController::class, 'reset'])->name('onboarding.reset');
 
     // Kamus Mini & Buku Kosakata Favorit
     Route::get('/kamus',                     [DictionaryController::class, 'index'])->name('dictionary.index');
