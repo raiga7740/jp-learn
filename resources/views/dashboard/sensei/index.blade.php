@@ -119,6 +119,124 @@
         transform: translateY(-1px);
     }
 
+    /* ── Engine Switch Pills (Header) ── */
+    .engine-switch-pills {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(0, 0, 0, .32);
+        border: 1px solid rgba(255, 255, 255, .15);
+        border-radius: 12px;
+        padding: 3px;
+        gap: 3px;
+    }
+
+    .btn-engine-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 11px;
+        border-radius: 9px;
+        border: none;
+        background: transparent;
+        color: rgba(255, 255, 255, .7);
+        font-size: 11.5px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all .18s ease;
+        white-space: nowrap;
+    }
+
+    .btn-engine-pill:hover:not(.active) {
+        color: #fff;
+        background: rgba(255, 255, 255, .08);
+    }
+
+    .btn-engine-pill.active[data-engine="gemini"] {
+        background: linear-gradient(135deg, #0ca678 0%, #099268 100%);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(12, 166, 120, .4);
+    }
+
+    .btn-engine-pill.active[data-engine="builtin"] {
+        background: linear-gradient(135deg, #c4102e 0%, #a00d25 100%);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(196, 16, 46, .4);
+    }
+
+    /* ── Active Engine Bar (Above Input Form) ── */
+    .active-engine-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 6px 12px;
+        margin-bottom: 8px;
+        border-radius: 10px;
+        background: #fff;
+        border: 1px solid var(--border);
+        font-size: 11.5px;
+        color: var(--muted);
+        transition: background .2s ease, border-color .2s ease;
+    }
+
+    .active-engine-bar.gemini {
+        background: #f0fdf9;
+        border-color: #c3fae8;
+    }
+
+    .active-engine-bar.builtin {
+        background: #fff5f6;
+        border-color: #ffd4dc;
+    }
+
+    .active-engine-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .active-engine-indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #0ca678;
+        box-shadow: 0 0 0 2px rgba(12, 166, 120, .2);
+        animation: pulseIndicator 2s infinite;
+        flex-shrink: 0;
+    }
+
+    .active-engine-bar.builtin .active-engine-indicator {
+        background: #c4102e;
+        box-shadow: 0 0 0 2px rgba(196, 16, 46, .2);
+    }
+
+    @keyframes pulseIndicator {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.18); opacity: .75; }
+    }
+
+    .active-engine-text strong {
+        color: var(--text);
+        font-weight: 700;
+    }
+
+    .btn-switch-engine-quick {
+        border: none;
+        background: none;
+        color: var(--red);
+        font-size: 11.5px;
+        font-weight: 700;
+        cursor: pointer;
+        padding: 2px 6px;
+        border-radius: 6px;
+        transition: .15s ease;
+        white-space: nowrap;
+    }
+
+    .btn-switch-engine-quick:hover {
+        background: rgba(196, 16, 46, .08);
+        text-decoration: underline;
+    }
+
     /* ── Chat Messages Body ── */
     .sensei-messages-body {
         flex: 1;
@@ -513,35 +631,44 @@
         cursor: not-allowed;
     }
 
-    /* ── Modal Settings ── */
+    /* ── Modal & Pop-up System ── */
     .sensei-modal-overlay {
         position: fixed;
         inset: 0;
-        background: rgba(0, 0, 0, .5);
-        backdrop-filter: blur(4px);
+        background: rgba(15, 12, 32, .58);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
         display: none;
         align-items: center;
         justify-content: center;
         z-index: 9999;
         padding: 20px;
+        animation: modalFadeIn .2s ease-out;
     }
 
     .sensei-modal-overlay.show {
         display: flex;
     }
 
+    @keyframes modalFadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
     .sensei-modal-card {
         background: #fff;
-        border-radius: 20px;
+        border-radius: 24px;
         width: 100%;
         max-width: 480px;
-        padding: 26px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, .2);
-        animation: modalScale .2s ease-out;
+        padding: 26px 28px;
+        border: 1px solid var(--border);
+        box-shadow: 0 20px 50px -10px rgba(15, 12, 32, .3);
+        animation: modalScale .24s cubic-bezier(.16, 1, .3, 1);
+        position: relative;
     }
 
     @keyframes modalScale {
-        from { transform: scale(.95); opacity: 0; }
+        from { transform: scale(.93); opacity: 0; }
         to { transform: scale(1); opacity: 1; }
     }
 
@@ -552,11 +679,38 @@
         margin-bottom: 16px;
     }
 
+    .modal-head-title-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .modal-head-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--red-soft, #fde8ec), #fff);
+        border: 1px solid #ffd0d8;
+        color: var(--red);
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+    }
+
     .modal-head h3 {
         margin: 0;
         font-size: 17px;
         font-weight: 800;
         color: var(--text);
+        line-height: 1.25;
+    }
+
+    .modal-head-sub {
+        font-size: 10.5px;
+        font-weight: 800;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--red);
     }
 
     .btn-modal-close {
@@ -564,8 +718,11 @@
         border: none;
         color: var(--muted);
         cursor: pointer;
-        padding: 4px;
-        border-radius: 8px;
+        padding: 6px;
+        border-radius: 10px;
+        transition: .15s ease;
+        display: grid;
+        place-items: center;
     }
 
     .btn-modal-close:hover {
@@ -573,10 +730,315 @@
         color: var(--text);
     }
 
+    /* ── Custom Confirmation Pop-up ── */
+    .sensei-confirm-card {
+        text-align: center;
+        max-width: 420px;
+        padding: 32px 28px 26px;
+    }
+
+    .confirm-icon-box {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 14px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        transition: transform .2s ease;
+        position: relative;
+    }
+
+    .confirm-icon-box.danger {
+        background: #fee7eb;
+        color: var(--red);
+        box-shadow: 0 10px 24px -6px rgba(196, 16, 46, .35);
+    }
+
+    .confirm-icon-box.warning {
+        background: #fff3bf;
+        color: #d9480f;
+        box-shadow: 0 10px 24px -6px rgba(217, 72, 15, .3);
+    }
+
+    .confirm-icon-box.info {
+        background: #e8ecf8;
+        color: #2d3a8c;
+        box-shadow: 0 10px 24px -6px rgba(45, 58, 140, .3);
+    }
+
+    .confirm-badge {
+        display: inline-block;
+        font-size: 10.5px;
+        font-weight: 800;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        color: var(--red);
+        background: #fff1f3;
+        border: 1px solid #ffd4dc;
+        padding: 3px 12px;
+        border-radius: 999px;
+        margin-bottom: 10px;
+    }
+
+    .confirm-title {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--text);
+        margin: 0 0 8px;
+        line-height: 1.3;
+    }
+
+    .confirm-desc {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.55;
+        margin: 0 0 24px;
+    }
+
+    .confirm-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .btn-confirm-cancel {
+        flex: 1;
+        padding: 11px 16px;
+        border-radius: 12px;
+        background: #f1eae6;
+        border: 1px solid #e2d9d4;
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: .18s ease;
+    }
+
+    .btn-confirm-cancel:hover {
+        background: #e6ded8;
+        color: #000;
+    }
+
+    .btn-confirm-accept {
+        flex: 1.2;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 11px 16px;
+        border-radius: 12px;
+        border: none;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: .18s ease;
+    }
+
+    .btn-confirm-accept.danger {
+        background: linear-gradient(135deg, #c4102e, #e8234f);
+        box-shadow: 0 8px 20px -6px rgba(196, 16, 46, .5);
+    }
+
+    .btn-confirm-accept.danger:hover {
+        background: linear-gradient(135deg, #a00d25, #c4102e);
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px -4px rgba(196, 16, 46, .6);
+    }
+
+    .btn-confirm-accept.primary {
+        background: linear-gradient(135deg, #2d3a8c, #4a5bd6);
+        box-shadow: 0 8px 20px -6px rgba(45, 58, 140, .45);
+    }
+
+    .btn-confirm-accept.primary:hover {
+        background: linear-gradient(135deg, #1f2a68, #2d3a8c);
+        transform: translateY(-1px);
+    }
+
+    /* ── Floating Toast Pop-up System ── */
+    .sensei-toast-container {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        z-index: 10000;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .sensei-toast {
+        pointer-events: auto;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 300px;
+        max-width: 420px;
+        padding: 12px 16px;
+        border-radius: 16px;
+        background: #fff;
+        border: 1px solid var(--border);
+        box-shadow: 0 16px 36px -8px rgba(15, 12, 32, .22);
+        animation: toastSlideIn .3s cubic-bezier(.16, 1, .3, 1);
+        transition: transform .2s ease, opacity .2s ease;
+    }
+
+    .sensei-toast.leaving {
+        opacity: 0;
+        transform: translateY(-12px) scale(.95);
+    }
+
+    @keyframes toastSlideIn {
+        from { opacity: 0; transform: translateY(-18px) scale(.94); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .sensei-toast-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 11px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+    }
+
+    .sensei-toast.success .sensei-toast-icon {
+        background: #e6fcf5;
+        color: #087f5b;
+    }
+
+    .sensei-toast.error .sensei-toast-icon {
+        background: #fff5f5;
+        color: #c92a2a;
+    }
+
+    .sensei-toast.info .sensei-toast-icon {
+        background: #e8ecf8;
+        color: #2d3a8c;
+    }
+
+    .sensei-toast.warning .sensei-toast-icon {
+        background: #fff9db;
+        color: #e67700;
+    }
+
+    .sensei-toast-body {
+        flex: 1;
+        min-width: 0;
+        line-height: 1.35;
+    }
+
+    .sensei-toast-body strong {
+        display: block;
+        font-size: 13px;
+        font-weight: 800;
+        color: var(--text);
+    }
+
+    .sensei-toast-body span {
+        display: block;
+        font-size: 11.5px;
+        color: var(--muted);
+        margin-top: 2px;
+    }
+
+    .sensei-toast-close {
+        background: none;
+        border: none;
+        color: var(--muted);
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        transition: .15s ease;
+        flex-shrink: 0;
+    }
+
+    .sensei-toast-close:hover {
+        background: #f1eae6;
+        color: var(--text);
+    }
+
+    /* Password Input Wrap with Eye Toggle */
+    .input-key-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-key-wrap input {
+        width: 100%;
+        padding: 11px 40px 11px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        font-size: 13px;
+        outline: none;
+        font-family: monospace;
+        box-sizing: border-box;
+        transition: border-color .18s ease;
+    }
+
+    .input-key-wrap input:focus {
+        border-color: var(--red);
+        box-shadow: 0 0 0 3px rgba(196, 16, 46, .1);
+    }
+
+    .btn-toggle-eye {
+        position: absolute;
+        right: 10px;
+        background: none;
+        border: none;
+        color: var(--muted);
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 6px;
+        display: grid;
+        place-items: center;
+        transition: .15s ease;
+    }
+
+    .btn-toggle-eye:hover {
+        color: var(--text);
+    }
+
+    @media (max-width: 600px) {
+        .sensei-toast-container {
+            top: 16px;
+            right: 12px;
+            left: 12px;
+        }
+        .sensei-toast {
+            min-width: 0;
+            max-width: none;
+        }
+    }
+
     @media (max-width: 768px) {
         .sensei-wrap {
             height: calc(100vh - 140px);
             border-radius: 14px;
+        }
+        .sensei-header {
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 12px 14px;
+        }
+        .sensei-header-actions {
+            width: 100%;
+            justify-content: space-between;
+        }
+        .engine-switch-pills {
+            flex: 1;
+            max-width: 210px;
+        }
+        .btn-engine-pill {
+            flex: 1;
+            justify-content: center;
+            padding: 4px 6px;
+            font-size: 11px;
         }
         .suggestions-grid {
             grid-template-columns: 1fr;
@@ -616,6 +1078,22 @@
             </div>
 
             <div class="sensei-header-actions">
+                <!-- Engine Selector Switcher -->
+                <div class="engine-switch-pills" role="radiogroup" aria-label="Pilih Mode Mesin AI">
+                    <button type="button" class="btn-engine-pill active" id="btnEngineGemini" data-engine="gemini" title="Mode AI Gemini: Cerdas & percakapan alami via Google Cloud AI">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <span>AI Gemini</span>
+                    </button>
+                    <button type="button" class="btn-engine-pill" id="btnEngineBuiltin" data-engine="builtin" title="Mode Sensei Engine: Super instan & bebas kuota (Bawaan JP Learn)">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                        <span>Sensei Engine</span>
+                    </button>
+                </div>
+
                 <button type="button" class="btn-header-action" id="btnOpenSettings" title="Pengaturan Model / API Key">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="3"></circle>
@@ -672,6 +1150,19 @@
 
         <!-- 3. Bottom Input Bar -->
         <div class="sensei-input-box">
+            <!-- Active Engine Info Bar -->
+            <div class="active-engine-bar gemini" id="activeEngineBar">
+                <div class="active-engine-left">
+                    <span class="active-engine-indicator"></span>
+                    <span class="active-engine-text" id="activeEngineText">
+                        Mode Aktif: <strong>AI Gemini (Google Cloud)</strong> &bull; Cerdas & Analisis Mendalam
+                    </span>
+                </div>
+                <button type="button" class="btn-switch-engine-quick" id="btnQuickSwitchEngine" title="Klik untuk beralih mode mesin AI">
+                    Ganti ke Sensei Engine
+                </button>
+            </div>
+
             <!-- Quick Chips -->
             <div class="quick-chips-row">
                 <button type="button" class="chip-item" data-fill="Apa perbedaan partikel は (wa) dan が (ga)?">
@@ -712,11 +1203,22 @@
 <!-- ══════════════════════════════════════════════
      MODAL PENGATURAN API KEY (GEMINI)
 ══════════════════════════════════════════════ -->
-<div class="sensei-modal-overlay" id="settingsModal">
+<div class="sensei-modal-overlay" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
     <div class="sensei-modal-card">
         <div class="modal-head">
-            <h3>Pengaturan AI Model</h3>
-            <button type="button" class="btn-modal-close" id="btnCloseModal">
+            <div class="modal-head-title-wrap">
+                <div class="modal-head-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <div class="modal-head-sub">設定 &bull; Konfigurasi AI</div>
+                    <h3 id="settingsModalTitle">Pengaturan Model & API</h3>
+                </div>
+            </div>
+            <button type="button" class="btn-modal-close" id="btnCloseModal" aria-label="Tutup Pengaturan">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -724,41 +1226,97 @@
             </button>
         </div>
 
-        <p style="font-size:13px; color:var(--muted); line-height:1.5; margin:0 0 16px 0;">
-            Secara default, Kenji Sensei sudah dibekali <strong>Smart Built-in Engine</strong> yang aktif otomatis. Untuk jawaban yang jauh lebih mendalam, kamu bisa memasukkan <strong>Google Gemini API Key gratis</strong>.
+        <p style="font-size:13px; color:var(--muted); line-height:1.55; margin:0 0 16px 0;">
+            Kenji Sensei otomatis siap membimbingmu dengan <strong>Smart Built-in Engine</strong> (gratis & offline). Kamu juga bisa memasukkan <strong>Google Gemini API Key gratis</strong> untuk penjelasan yang lebih interaktif.
         </p>
 
         <div style="margin-bottom:16px;">
             <label style="display:block; font-size:12px; font-weight:800; color:var(--text); margin-bottom:6px;">
                 Google Gemini API Key (Opsional):
             </label>
-            <input
-                type="password"
-                id="apiKeyInput"
-                placeholder="AIzaSy..."
-                style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid var(--border); font-size:13px; outline:none; font-family:monospace; box-sizing:border-box;">
-            <span style="display:block; font-size:11.5px; color:var(--muted); margin-top:5px;">
-                Kunci ini disimpan aman di browser lokalmu (localStorage) dan tidak dibagikan ke orang lain. Dapatkan gratis di <a href="https://aistudio.google.com/" target="_blank" style="color:var(--red); font-weight:700; text-decoration:underline;">Google AI Studio</a>.
+            <div class="input-key-wrap">
+                <input
+                    type="password"
+                    id="apiKeyInput"
+                    placeholder="AIzaSy..."
+                    autocomplete="off"
+                    spellcheck="false">
+                <button type="button" class="btn-toggle-eye" id="btnToggleKeyVisibility" title="Lihat/Sembunyikan API Key">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" id="eyeIcon">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </button>
+            </div>
+            <span style="display:block; font-size:11.5px; color:var(--muted); margin-top:6px; line-height:1.4;">
+                Kunci ini tersimpan aman di browser lokalmu (localStorage). Dapatkan gratis di <a href="https://aistudio.google.com/" target="_blank" rel="noopener" style="color:var(--red); font-weight:700; text-decoration:underline;">Google AI Studio</a>.
             </span>
         </div>
 
-        <div id="apiKeyTestStatus" style="display:none; padding:10px 14px; border-radius:10px; font-size:12.5px; margin-bottom:14px; line-height:1.4;"></div>
+        <div id="apiKeyTestStatus" style="display:none; padding:11px 14px; border-radius:12px; font-size:12.5px; margin-bottom:16px; line-height:1.45;"></div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
             <button type="button" class="btn-header-action" id="btnTestApiKey" style="background:#e6fcf5; color:#087f5b; border-color:#b2f2bb;">
-                Uji Koneksi API
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <span>Uji Koneksi API</span>
             </button>
             <div style="display:flex; gap:8px;">
                 <button type="button" class="btn-header-action" id="btnClearApiKey" style="background:#f1eae6; color:var(--text); border-color:#e2d9d4;">
-                    Hapus
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    <span>Hapus</span>
                 </button>
                 <button type="button" class="btn-header-action" id="btnSaveApiKey" style="background:var(--red); color:#fff; border-color:var(--red);">
-                    Simpan
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>Simpan</span>
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+<!-- ══════════════════════════════════════════════
+     MODAL KONFIRMASI CUSTOM (POP-UP)
+══════════════════════════════════════════════ -->
+<div class="sensei-modal-overlay" id="senseiConfirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle">
+    <div class="sensei-modal-card sensei-confirm-card">
+        <div class="confirm-icon-box danger" id="confirmModalIconBox">
+            <svg id="confirmModalIcon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+        </div>
+        <div class="confirm-badge" id="confirmModalBadge">確認 &bull; KONFIRMASI</div>
+        <h3 class="confirm-title" id="confirmModalTitle">Bersihkan Riwayat Percakapan?</h3>
+        <p class="confirm-desc" id="confirmModalDesc">
+            Semua riwayat tanya jawab dengan Kenji Sensei di perangkat ini akan dihapus secara permanen. Tindakan ini tidak dapat dibatalkan.
+        </p>
+        <div class="confirm-actions">
+            <button type="button" class="btn-confirm-cancel" id="btnConfirmCancel">Batal</button>
+            <button type="button" class="btn-confirm-accept danger" id="btnConfirmAccept">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                <span id="confirmAcceptText">Ya, Bersihkan</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     FLOATING TOAST NOTIFICATION CONTAINER
+══════════════════════════════════════════════ -->
+<div class="sensei-toast-container" id="senseiToastContainer" aria-live="polite"></div>
 
 <script>
 (function() {
@@ -782,14 +1340,103 @@
 
     const STORAGE_CHAT_KEY = 'jplearn_sensei_history_v1';
     const STORAGE_API_KEY = 'jplearn_gemini_api_key';
+    const STORAGE_ENGINE_KEY = 'jplearn_active_engine';
 
+    const btnEngineGemini = document.getElementById('btnEngineGemini');
+    const btnEngineBuiltin = document.getElementById('btnEngineBuiltin');
+    const btnQuickSwitchEngine = document.getElementById('btnQuickSwitchEngine');
+    const activeEngineBar = document.getElementById('activeEngineBar');
+    const activeEngineText = document.getElementById('activeEngineText');
+
+    let currentEngine = 'gemini';
     let conversationHistory = []; // { role: 'user' | 'sensei', text: string, engine?: string, snippets?: string[] }
+
+    // ── Engine Switcher Controller ──
+    function setEngine(engine, showToast = true) {
+        const apiKey = localStorage.getItem(STORAGE_API_KEY) || '';
+
+        if (engine === 'gemini' && !apiKey) {
+            showConfirmModal({
+                title: 'Gunakan Mode AI Gemini?',
+                desc: 'Mode AI Gemini membutuhkan Google Gemini API Key gratis. Buka Pengaturan sekarang untuk memasukkan API Key, atau tetap gunakan Sensei Engine bawaan?',
+                badge: '設定 • GOOGLE GEMINI',
+                confirmText: 'Buka Pengaturan API',
+                type: 'info',
+                onConfirm: () => {
+                    settingsModal.classList.add('show');
+                }
+            });
+            return;
+        }
+
+        currentEngine = engine;
+        localStorage.setItem(STORAGE_ENGINE_KEY, currentEngine);
+        renderEngineUI();
+
+        if (showToast) {
+            if (currentEngine === 'gemini') {
+                showSenseiToast('Mode AI Gemini Aktif', 'Pertanyaan akan dijawab oleh Google Gemini Cloud AI.', 'success');
+            } else {
+                showSenseiToast('Sensei Engine Aktif', 'Pertanyaan akan dijawab instan oleh mesin bawaan JP Learn (bebas kuota).', 'info');
+            }
+        }
+    }
+
+    function renderEngineUI() {
+        if (btnEngineGemini && btnEngineBuiltin) {
+            btnEngineGemini.classList.toggle('active', currentEngine === 'gemini');
+            btnEngineBuiltin.classList.toggle('active', currentEngine === 'builtin');
+        }
+
+        if (activeEngineBar && activeEngineText) {
+            activeEngineBar.className = `active-engine-bar ${currentEngine}`;
+            if (currentEngine === 'gemini') {
+                activeEngineText.innerHTML = 'Mode Aktif: <strong>AI Gemini (Google Cloud)</strong> &bull; Analisis Cerdas & Komprehensif';
+                if (btnQuickSwitchEngine) btnQuickSwitchEngine.textContent = 'Ganti ke Sensei Engine';
+            } else {
+                activeEngineText.innerHTML = 'Mode Aktif: <strong>Sensei Engine (Bawaan JP Learn)</strong> &bull; Super Cepat, Instan & Bebas Kuota';
+                if (btnQuickSwitchEngine) btnQuickSwitchEngine.textContent = 'Ganti ke AI Gemini';
+            }
+        }
+    }
+
+    if (btnEngineGemini) {
+        btnEngineGemini.addEventListener('click', () => setEngine('gemini'));
+    }
+    if (btnEngineBuiltin) {
+        btnEngineBuiltin.addEventListener('click', () => setEngine('builtin'));
+    }
+    if (btnQuickSwitchEngine) {
+        btnQuickSwitchEngine.addEventListener('click', () => {
+            const nextEngine = currentEngine === 'gemini' ? 'builtin' : 'gemini';
+            setEngine(nextEngine);
+        });
+    }
 
     // ── Load Saved API Key & History ──
     function init() {
-        // Load API Key
+        // Load API Key & Verified Model
         const savedKey = localStorage.getItem(STORAGE_API_KEY) || '';
+        const savedModel = localStorage.getItem('jplearn_gemini_model') || '';
+        const savedVersion = localStorage.getItem('jplearn_gemini_version') || '';
         if (apiKeyInput) apiKeyInput.value = savedKey;
+
+        // Inisialisasi Mode Mesin (Gemini vs Sensei Engine)
+        const savedEngine = localStorage.getItem(STORAGE_ENGINE_KEY);
+        if (savedEngine === 'gemini' || savedEngine === 'builtin') {
+            currentEngine = savedEngine;
+        } else {
+            currentEngine = savedKey ? 'gemini' : 'builtin';
+        }
+        renderEngineUI();
+
+        if (savedKey && savedModel && apiKeyTestStatus) {
+            apiKeyTestStatus.style.display = 'block';
+            apiKeyTestStatus.style.background = '#e6fcf5';
+            apiKeyTestStatus.style.color = '#087f5b';
+            apiKeyTestStatus.style.border = '1px solid #b2f2bb';
+            apiKeyTestStatus.innerHTML = `<strong>Koneksi Aktif!</strong> Model terverifikasi: <code>${savedModel}</code> (${savedVersion || 'v1beta'})`;
+        }
 
         // Load Chat History
         try {
@@ -949,7 +1596,7 @@
     // ── Text-To-Speech (Web Speech API) ──
     function speakJapaneseText(text, btnElement) {
         if (!('speechSynthesis' in window)) {
-            alert('Browser kamu belum mendukung audio pelafalan Web Speech API.');
+            showSenseiToast('Fitur Audio Tidak Didukung', 'Browser kamu belum mendukung audio pelafalan Web Speech API.', 'warning');
             return;
         }
 
@@ -1012,6 +1659,8 @@
         scrollToBottom();
 
         const userKey = localStorage.getItem(STORAGE_API_KEY) || '';
+        const userModel = localStorage.getItem('jplearn_gemini_model') || '';
+        const userVersion = localStorage.getItem('jplearn_gemini_version') || '';
 
         try {
             const response = await fetch("{{ route('sensei.chat') }}", {
@@ -1023,6 +1672,9 @@
                 body: JSON.stringify({
                     message: query,
                     api_key: userKey,
+                    model: userModel,
+                    version: userVersion,
+                    engine: currentEngine,
                     history: conversationHistory.slice(-8)
                 })
             });
@@ -1110,13 +1762,137 @@
         });
     });
 
+    // ── Toast Notification System ──
+    const toastContainer = document.getElementById('senseiToastContainer');
+    function showSenseiToast(title, message, type = 'info') {
+        if (!toastContainer) return;
+
+        const toast = document.createElement('div');
+        toast.className = `sensei-toast ${type}`;
+
+        const icons = {
+            success: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>',
+            error: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>',
+            warning: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>',
+            info: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>'
+        };
+
+        const iconHtml = icons[type] || icons.info;
+
+        toast.innerHTML = `
+            <div class="sensei-toast-icon">${iconHtml}</div>
+            <div class="sensei-toast-body">
+                <strong>${title}</strong>
+                <span>${message}</span>
+            </div>
+            <button type="button" class="sensei-toast-close" aria-label="Tutup notifikasi">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        `;
+
+        const closeBtn = toast.querySelector('.sensei-toast-close');
+        const dismiss = () => {
+            if (toast.classList.contains('leaving')) return;
+            toast.classList.add('leaving');
+            setTimeout(() => { toast.remove(); }, 220);
+        };
+
+        closeBtn.addEventListener('click', dismiss);
+        setTimeout(dismiss, 3600);
+
+        toastContainer.appendChild(toast);
+    }
+
+    // ── Confirmation Modal System ──
+    const confirmModal = document.getElementById('senseiConfirmModal');
+    const confirmModalIconBox = document.getElementById('confirmModalIconBox');
+    const confirmModalTitle = document.getElementById('confirmModalTitle');
+    const confirmModalDesc = document.getElementById('confirmModalDesc');
+    const confirmModalBadge = document.getElementById('confirmModalBadge');
+    const btnConfirmCancel = document.getElementById('btnConfirmCancel');
+    const btnConfirmAccept = document.getElementById('btnConfirmAccept');
+    const confirmAcceptText = document.getElementById('confirmAcceptText');
+
+    let onConfirmCallback = null;
+
+    function showConfirmModal(opts) {
+        if (!confirmModal) return;
+
+        confirmModalTitle.textContent = opts.title || 'Konfirmasi Tindakan';
+        confirmModalDesc.textContent = opts.desc || 'Apakah kamu yakin ingin melanjutkan?';
+        confirmModalBadge.textContent = opts.badge || '確認 • KONFIRMASI';
+        confirmAcceptText.textContent = opts.confirmText || 'Lanjutkan';
+
+        const type = opts.type || 'danger';
+        confirmModalIconBox.className = `confirm-icon-box ${type}`;
+        btnConfirmAccept.className = `btn-confirm-accept ${type}`;
+
+        const trashIcon = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>';
+        const warningIcon = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+        
+        confirmModalIconBox.innerHTML = (type === 'danger') ? trashIcon : warningIcon;
+
+        onConfirmCallback = opts.onConfirm || null;
+        confirmModal.classList.add('show');
+    }
+
+    function closeConfirmModal() {
+        if (confirmModal) confirmModal.classList.remove('show');
+        onConfirmCallback = null;
+    }
+
+    if (btnConfirmCancel) {
+        btnConfirmCancel.addEventListener('click', closeConfirmModal);
+    }
+
+    if (btnConfirmAccept) {
+        btnConfirmAccept.addEventListener('click', () => {
+            if (typeof onConfirmCallback === 'function') {
+                const cb = onConfirmCallback;
+                closeConfirmModal();
+                cb();
+            } else {
+                closeConfirmModal();
+            }
+        });
+    }
+
+    if (confirmModal) {
+        confirmModal.addEventListener('click', (e) => {
+            if (e.target === confirmModal) closeConfirmModal();
+        });
+    }
+
+    // Toggle Eye Password
+    const btnToggleKeyVisibility = document.getElementById('btnToggleKeyVisibility');
+    if (btnToggleKeyVisibility && apiKeyInput) {
+        btnToggleKeyVisibility.addEventListener('click', () => {
+            const isPassword = apiKeyInput.type === 'password';
+            apiKeyInput.type = isPassword ? 'text' : 'password';
+            btnToggleKeyVisibility.innerHTML = isPassword
+                ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="2" x2="23" y2="23"></line></svg>'
+                : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+        });
+    }
+
     // ── Clear Chat History ──
     btnClearChat.addEventListener('click', () => {
-        if (confirm('Yakin ingin membersihkan riwayat percakapan dengan Kenji Sensei?')) {
-            conversationHistory = [];
-            localStorage.removeItem(STORAGE_CHAT_KEY);
-            renderMessages();
-        }
+        showConfirmModal({
+            title: 'Bersihkan Riwayat Percakapan?',
+            desc: 'Semua pesan percakapan dengan Kenji Sensei di perangkat ini akan dihapus secara permanen. Tindakan ini tidak dapat dibatalkan.',
+            badge: '確認 • BERSIHKAN RIWAYAT',
+            confirmText: 'Ya, Bersihkan',
+            type: 'danger',
+            onConfirm: () => {
+                conversationHistory = [];
+                localStorage.removeItem(STORAGE_CHAT_KEY);
+                renderMessages();
+                showSenseiToast('Riwayat Dibersihkan', 'Riwayat percakapan berhasil dibersihkan.', 'info');
+            }
+        });
     });
 
     // ── Settings Modal Handlers ──
@@ -1136,9 +1912,18 @@
 
     btnSaveApiKey.addEventListener('click', () => {
         const key = apiKeyInput.value.trim();
+        const oldKey = localStorage.getItem(STORAGE_API_KEY) || '';
         localStorage.setItem(STORAGE_API_KEY, key);
+        if (key !== oldKey) {
+            localStorage.removeItem('jplearn_gemini_model');
+            localStorage.removeItem('jplearn_gemini_version');
+        }
         settingsModal.classList.remove('show');
-        alert(key ? 'Google Gemini API Key berhasil disimpan!' : 'Pengaturan disimpan: menggunakan Smart Built-in Engine.');
+        if (key) {
+            showSenseiToast('Kunci API Disimpan', 'Google Gemini API Key berhasil disimpan untuk sesi belajarmu!', 'success');
+        } else {
+            showSenseiToast('Pengaturan Disimpan', 'Kenji Sensei aktif menggunakan Smart Built-in Engine.', 'info');
+        }
     });
 
     btnTestApiKey.addEventListener('click', async () => {
@@ -1149,6 +1934,7 @@
             apiKeyTestStatus.style.color = '#c92a2a';
             apiKeyTestStatus.style.border = '1px solid #ffc9c9';
             apiKeyTestStatus.textContent = 'Silakan masukkan API Key terlebih dahulu sebelum menguji.';
+            showSenseiToast('API Key Kosong', 'Silakan masukkan API Key terlebih dahulu sebelum menguji.', 'warning');
             return;
         }
 
@@ -1172,21 +1958,30 @@
             const data = await res.json();
 
             if (data.valid) {
+                // Otomatis simpan API Key & Model yang terverifikasi ke LocalStorage
+                localStorage.setItem(STORAGE_API_KEY, key);
+                if (data.model) localStorage.setItem('jplearn_gemini_model', data.model);
+                if (data.version) localStorage.setItem('jplearn_gemini_version', data.version);
+                setEngine('gemini', false);
+
                 apiKeyTestStatus.style.background = '#e6fcf5';
                 apiKeyTestStatus.style.color = '#087f5b';
                 apiKeyTestStatus.style.border = '1px solid #b2f2bb';
                 apiKeyTestStatus.innerHTML = `<strong>Koneksi Berhasil!</strong> ${data.message}`;
+                showSenseiToast('Koneksi Berhasil!', `Model Google ${data.model || 'Gemini'} terverifikasi & otomatis aktif!`, 'success');
             } else {
                 apiKeyTestStatus.style.background = '#fff5f5';
                 apiKeyTestStatus.style.color = '#c92a2a';
                 apiKeyTestStatus.style.border = '1px solid #ffc9c9';
                 apiKeyTestStatus.innerHTML = `<strong>Koneksi Gagal:</strong> ${data.message}`;
+                showSenseiToast('Koneksi Gagal', data.message, 'error');
             }
         } catch (e) {
             apiKeyTestStatus.style.background = '#fff5f5';
             apiKeyTestStatus.style.color = '#c92a2a';
             apiKeyTestStatus.style.border = '1px solid #ffc9c9';
-            apiKeyTestStatus.textContent = 'Gagal menghubungi server lokal: ' + e.message;
+            apiKeyTestStatus.textContent = 'Gagal menghubungi server: ' + e.message;
+            showSenseiToast('Koneksi Gagal', 'Gagal menghubungi server lokal: ' + e.message, 'error');
         } finally {
             btnTestApiKey.disabled = false;
             btnTestApiKey.textContent = 'Uji Koneksi API';
@@ -1194,9 +1989,29 @@
     });
 
     btnClearApiKey.addEventListener('click', () => {
-        apiKeyInput.value = '';
-        localStorage.removeItem(STORAGE_API_KEY);
-        alert('API Key berhasil dihapus. Kenji Sensei akan menggunakan Smart Built-in Engine.');
+        const currentKey = apiKeyInput.value.trim() || localStorage.getItem(STORAGE_API_KEY);
+        if (!currentKey) {
+            showSenseiToast('Kunci Kosong', 'Tidak ada Google Gemini API Key yang tersimpan.', 'info');
+            return;
+        }
+
+        showConfirmModal({
+            title: 'Hapus Google Gemini API Key?',
+            desc: 'Kunci API ini akan dihapus dari penyimpanan browser. Kenji Sensei akan kembali menggunakan Smart Built-in Engine bawaan.',
+            badge: '設定 • HAPUS KUNCI',
+            confirmText: 'Ya, Hapus Kunci',
+            type: 'warning',
+            onConfirm: () => {
+                apiKeyInput.value = '';
+                localStorage.removeItem(STORAGE_API_KEY);
+                localStorage.removeItem('jplearn_gemini_model');
+                localStorage.removeItem('jplearn_gemini_version');
+                setEngine('builtin', false);
+                apiKeyTestStatus.style.display = 'none';
+                settingsModal.classList.remove('show');
+                showSenseiToast('API Key Dihapus', 'Kenji Sensei kembali menggunakan Smart Built-in Engine.', 'info');
+            }
+        });
     });
 
     // ── Run Init ──

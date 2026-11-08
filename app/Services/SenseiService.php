@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -20,8 +21,14 @@ class SenseiService
      * @param array<int, array{role: string, text: string}> $history Riwayat percakapan sebelumnya
      * @return array{reply: string, engine: string, japanese_snippets: array<int, string>}
      */
-    public function respond(string $message, ?string $userApiKey = null, array $history = []): array
-    {
+    public function respond(
+        string $message,
+        ?string $userApiKey = null,
+        array $history = [],
+        ?string $preferredModel = null,
+        ?string $preferredVersion = null,
+        string $engine = 'auto'
+    ): array {
         $cleanMessage = trim($message);
         if ($cleanMessage === '') {
             return [
@@ -31,10 +38,20 @@ class SenseiService
             ];
         }
 
-        // 1. Coba hubungi Google Gemini API jika API Key tersedia
+        // 1. Jika pengguna secara eksplisit memilih Sensei Engine (Bawaan internal & instan)
+        if ($engine === 'builtin') {
+            $builtinReply = $this->smartKnowledgeReply($cleanMessage);
+            return [
+                'reply'             => $builtinReply,
+                'engine'            => 'builtin',
+                'japanese_snippets' => $this->extractJapaneseSnippets($builtinReply),
+            ];
+        }
+
+        // 2. Hubungi Google Gemini API jika mode 'gemini' atau 'auto'
         $apiKey = $userApiKey ?: config('services.gemini.key', env('GEMINI_API_KEY'));
         if (!empty($apiKey)) {
-            $geminiReply = $this->callGemini($cleanMessage, $apiKey, $history);
+            $geminiReply = $this->callGemini($cleanMessage, $apiKey, $history, $preferredModel, $preferredVersion);
             if ($geminiReply !== null) {
                 return [
                     'reply'             => $geminiReply,
@@ -42,13 +59,21 @@ class SenseiService
                     'japanese_snippets' => $this->extractJapaneseSnippets($geminiReply),
                 ];
             }
+        } elseif ($engine === 'gemini') {
+            // Mode Gemini dipilih tapi API key kosong
+            return [
+                'reply'             => "Kamu sedang berada dalam mode **AI Gemini**, namun Google Gemini API Key belum terpasang di browser ini.\n\nSilakan klik tombol **Pengaturan API** di kanan atas untuk memasukkan API Key gratis milikmu, atau alihkan tombol mode ke **Sensei Engine** untuk mulai berdiskusi secara instan tanpa API key!",
+                'engine'            => 'builtin',
+                'japanese_snippets' => [],
+            ];
         }
 
-        // 2. Fallback: Gunakan Smart Built-in Knowledge Engine (Bebas pulsa / offline / aman InfinityFree)
+        // 3. Fallback: Gunakan Smart Built-in Knowledge Engine (Bebas pulsa / offline / aman InfinityFree)
         $builtinReply = $this->smartKnowledgeReply($cleanMessage);
+        $note = ($engine === 'gemini') ? "\n\n*(Catatan: Mode AI Gemini sedang tidak dapat dijangkau atau kuota API habis, Kenji Sensei otomatis menjawab dengan Sensei Engine)*" : "";
 
         return [
-            'reply'             => $builtinReply,
+            'reply'             => $builtinReply . $note,
             'engine'            => 'builtin',
             'japanese_snippets' => $this->extractJapaneseSnippets($builtinReply),
         ];
@@ -70,8 +95,22 @@ class SenseiService
             return $resolvedCache[$cacheKey];
         }
 
-        // Urutan prioritas model terbaik untuk chat belajar bahasa Jepang
+        // Periksa persistent cache untuk model yang sebelumnya sudah terbukti sukses
+        $saved = Cache::get('gemini_model_' . $cacheKey);
+        if (is_array($saved) && !empty($saved['model']) && !empty($saved['version'])) {
+            return $resolvedCache[$cacheKey] = [
+                'version'   => $saved['version'],
+                'model'     => $saved['model'],
+                'available' => [$saved['model']],
+            ];
+        }
+
+        // Urutan prioritas model terbaik Google Gemini (didahulukan model aktif 2026 yang kompatibel free tier)
         $priority = [
+            'gemini-flash-lite-latest',
+            'gemini-3.8-flash',
+            'gemini-2.5-flash-lite',
+            'gemini-flash-latest',
             'gemini-2.5-flash',
             'gemini-2.0-flash',
             'gemini-2.0-flash-exp',
@@ -79,6 +118,8 @@ class SenseiService
             'gemini-1.5-flash-002',
             'gemini-1.5-flash-001',
             'gemini-1.5-flash-8b',
+            'gemini-3.1-pro-preview',
+            'gemini-pro-latest',
             'gemini-2.5-pro',
             'gemini-1.5-pro',
             'gemini-1.5-pro-002',
@@ -155,10 +196,10 @@ class SenseiService
             }
         }
 
-        // 2. Fallback default jika ListModels gagal diakses (gunakan model aktif terkini)
+        // 2. Fallback default jika ListModels gagal diakses
         return $resolvedCache[$cacheKey] = [
             'version'   => 'v1beta',
-            'model'     => 'gemini-2.5-flash',
+            'model'     => 'gemini-flash-lite-latest',
             'available' => [],
         ];
     }
@@ -179,6 +220,8 @@ class SenseiService
             ];
         }
 
+        $cacheKey = substr(md5($cleanKey), 0, 12);
+
         // Cari model yang valid untuk API key ini melalui inspeksi ListModels
         $resolved = $this->resolveAvailableModel($cleanKey);
         $discovered = [];
@@ -191,17 +234,25 @@ class SenseiService
             }
         }
 
-        // Daftar kandidat untuk dicoba secara berurutan
+        // Daftar kandidat untuk dicoba secara berurutan, dahulukan model yang didukung free tier terkini
         $candidates = array_merge(
-            [[$resolved['version'], $resolved['model']]],
+            [
+                ['v1beta', 'gemini-flash-lite-latest'],
+                ['v1beta', 'gemini-3.8-flash'],
+                ['v1beta', 'gemini-2.5-flash-lite'],
+                [$resolved['version'], $resolved['model']],
+            ],
             $discovered,
             [
+                ['v1beta', 'gemini-flash-latest'],
                 ['v1beta', 'gemini-2.5-flash'],
                 ['v1beta', 'gemini-2.0-flash'],
                 ['v1beta', 'gemini-1.5-flash'],
                 ['v1beta', 'gemini-1.5-flash-002'],
                 ['v1beta', 'gemini-1.5-flash-8b'],
                 ['v1beta', 'gemini-2.5-pro'],
+                ['v1', 'gemini-flash-lite-latest'],
+                ['v1', 'gemini-3.8-flash'],
                 ['v1', 'gemini-2.5-flash'],
                 ['v1', 'gemini-2.0-flash'],
                 ['v1', 'gemini-1.5-flash'],
@@ -235,6 +286,11 @@ class SenseiService
 
                 if ($response->successful()) {
                     Log::info("Gemini testApiKey succeeded with {$mod} ({$ver})");
+                    Cache::put('gemini_model_' . $cacheKey, [
+                        'version' => $ver,
+                        'model'   => $mod,
+                    ], now()->addDays(7));
+
                     return [
                         'valid'   => true,
                         'message' => "Koneksi Berhasil! Model Google {$mod} ({$ver}) aktif dan siap digunakan.",
@@ -265,15 +321,27 @@ class SenseiService
     }
 
     /**
-     * Panggil Google Gemini API (gemini-2.5-flash / gemini-2.0-flash / gemini-1.5-flash).
+     * Panggil Google Gemini API secara andal dengan auto-fallback model.
      *
      * @param string $message
      * @param string $apiKey
      * @param array<int, array{role: string, text: string}> $history
+     * @param string|null $preferredModel
+     * @param string|null $preferredVersion
      * @return string|null
      */
-    protected function callGemini(string $message, string $apiKey, array $history = []): ?string
-    {
+    protected function callGemini(
+        string $message,
+        string $apiKey,
+        array $history = [],
+        ?string $preferredModel = null,
+        ?string $preferredVersion = null
+    ): ?string {
+        $cleanKey = trim($apiKey);
+        if ($cleanKey === '') {
+            return null;
+        }
+
         $systemInstruction = "Kamu adalah 'Kenji Sensei', seorang guru dan asisten AI bahasa Jepang virtual yang ramah, sopan, sabar, dan sangat ahli di platform edukasi JP Learn.
 Tugas utamamu:
 1. Membantu pembelajar memahami tata bahasa (grammar), partikel, kanji, kosakata, dan budaya Jepang (khususnya level JLPT N5 dan N4).
@@ -301,20 +369,56 @@ Tugas utamamu:
             'parts' => [['text' => $message]],
         ];
 
-        $resolved = $this->resolveAvailableModel($apiKey);
-        $candidates = [
-            [$resolved['version'], $resolved['model']],
+        $cacheKey = substr(md5($cleanKey), 0, 12);
+        $cached = Cache::get('gemini_model_' . $cacheKey);
+
+        // Kumpulkan kandidat model
+        $leadCandidates = [];
+
+        // 1. Model yang diteruskan dari frontend (terverifikasi saat uji koneksi)
+        if (!empty($preferredModel)) {
+            $leadCandidates[] = [!empty($preferredVersion) ? $preferredVersion : 'v1beta', $preferredModel];
+        }
+
+        // 2. Model yang tersimpan di cache backend
+        if (is_array($cached) && !empty($cached['model'])) {
+            $leadCandidates[] = [$cached['version'] ?? 'v1beta', $cached['model']];
+        }
+
+        // 3. Model modern bawaan 2026 yang aktif untuk free tier
+        $leadCandidates[] = ['v1beta', 'gemini-flash-lite-latest'];
+        $leadCandidates[] = ['v1beta', 'gemini-3.8-flash'];
+        $leadCandidates[] = ['v1beta', 'gemini-2.5-flash-lite'];
+
+        // 4. Model dari ListModels
+        $resolved = $this->resolveAvailableModel($cleanKey);
+        $leadCandidates[] = [$resolved['version'], $resolved['model']];
+
+        $discovered = [];
+        if (!empty($resolved['available'])) {
+            foreach ($resolved['available'] as $m) {
+                if (str_contains($m, 'flash') || str_contains($m, 'pro') || str_starts_with($m, 'gemini-')) {
+                    $discovered[] = [$resolved['version'], $m];
+                }
+            }
+        }
+
+        $fallbackCandidates = [
+            ['v1beta', 'gemini-flash-latest'],
             ['v1beta', 'gemini-2.5-flash'],
             ['v1beta', 'gemini-2.0-flash'],
             ['v1beta', 'gemini-1.5-flash'],
             ['v1beta', 'gemini-1.5-flash-002'],
             ['v1beta', 'gemini-1.5-flash-8b'],
             ['v1beta', 'gemini-2.5-pro'],
+            ['v1', 'gemini-flash-lite-latest'],
+            ['v1', 'gemini-3.8-flash'],
             ['v1', 'gemini-2.5-flash'],
             ['v1', 'gemini-2.0-flash'],
             ['v1', 'gemini-1.5-flash'],
         ];
 
+        $candidates = array_merge($leadCandidates, $discovered, $fallbackCandidates);
         $tested = [];
 
         foreach ($candidates as [$ver, $mod]) {
@@ -323,7 +427,7 @@ Tugas utamamu:
             $tested[$pairKey] = true;
 
             try {
-                $url = "https://generativelanguage.googleapis.com/{$ver}/models/{$mod}:generateContent?key={$apiKey}";
+                $url = "https://generativelanguage.googleapis.com/{$ver}/models/{$mod}:generateContent?key={$cleanKey}";
 
                 $payload = [
                     'contents'         => $contents,
@@ -340,12 +444,32 @@ Tugas utamamu:
                 }
 
                 $response = Http::withoutVerifying()
-                    ->timeout(14)
+                    ->timeout(15)
                     ->withHeaders([
                         'Content-Type'   => 'application/json',
-                        'x-goog-api-key' => $apiKey,
+                        'x-goog-api-key' => $cleanKey,
                     ])
                     ->post($url, $payload);
+
+                // Jika gagal karena systemInstruction tidak didukung model, coba kirim tanpa systemInstruction
+                if (!$response->successful() && isset($payload['systemInstruction'])) {
+                    $err = $response->json('error.message') ?? '';
+                    if (str_contains($err, 'systemInstruction') || str_contains($err, 'system_instruction')) {
+                        unset($payload['systemInstruction']);
+                        $fallbackContents = $contents;
+                        $fallbackContents[count($fallbackContents) - 1]['parts'][0]['text'] =
+                            "[Instruksi: {$systemInstruction}]\n\n" . $message;
+                        $payload['contents'] = $fallbackContents;
+
+                        $response = Http::withoutVerifying()
+                            ->timeout(15)
+                            ->withHeaders([
+                                'Content-Type'   => 'application/json',
+                                'x-goog-api-key' => $cleanKey,
+                            ])
+                            ->post($url, $payload);
+                    }
+                }
 
                 if ($response->successful()) {
                     $data = $response->json();
@@ -353,7 +477,15 @@ Tugas utamamu:
                     if (!empty($candidatesList)) {
                         $parts = $candidatesList[0]['content']['parts'] ?? [];
                         if (!empty($parts)) {
-                            return trim($parts[0]['text'] ?? '');
+                            $replyText = trim($parts[0]['text'] ?? '');
+                            if ($replyText !== '') {
+                                Log::info("Gemini callGemini succeeded using {$mod} ({$ver})");
+                                Cache::put('gemini_model_' . $cacheKey, [
+                                    'version' => $ver,
+                                    'model'   => $mod,
+                                ], now()->addDays(7));
+                                return $replyText;
+                            }
                         }
                     }
                 } else {

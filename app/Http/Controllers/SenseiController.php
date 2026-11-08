@@ -73,14 +73,20 @@ class SenseiController extends Controller
         $request->validate([
             'message'  => 'required|string|max:1000',
             'api_key'  => 'nullable|string|max:200',
+            'model'    => 'nullable|string|max:100',
+            'version'  => 'nullable|string|max:30',
+            'engine'   => 'nullable|string|in:gemini,builtin,auto',
             'history'  => 'nullable|array|max:20',
         ]);
 
-        $message = (string) $request->input('message');
-        $userApiKey = $request->input('api_key');
-        $history = (array) $request->input('history', []);
+        $message          = (string) $request->input('message');
+        $userApiKey       = $request->input('api_key');
+        $preferredModel   = $request->input('model');
+        $preferredVersion = $request->input('version');
+        $engine           = (string) $request->input('engine', 'auto');
+        $history          = (array) $request->input('history', []);
 
-        $result = $this->senseiService->respond($message, $userApiKey, $history);
+        $result = $this->senseiService->respond($message, $userApiKey, $history, $preferredModel, $preferredVersion, $engine);
 
         $reply = mb_convert_encoding($result['reply'], 'UTF-8', 'UTF-8');
         $snippets = array_map(
