@@ -28,8 +28,9 @@ class GamificationService
         'conversation_complete' => ['xp' => 15, 'daily_limit' => 4,  'label' => 'Percakapan selesai'],
         'vocab_saved'           => ['xp' => 5,  'daily_limit' => 10, 'label' => 'Menyimpan kosakata favorit'],
         'jlpt_mock_complete'    => ['xp' => 50, 'daily_limit' => 2,  'label' => 'Menyelesaikan Simulasi Ujian JLPT N5'],
-        'speed_match_complete'  => ['xp' => 15, 'daily_limit' => 10, 'label' => 'Bermain Kana Speed Match'],
-        'tanya_sensei_ask'      => ['xp' => 10, 'daily_limit' => 5,  'label' => 'Bertanya pada Tanya Sensei AI'],
+        'speed_match_complete'       => ['xp' => 15, 'daily_limit' => 10, 'label' => 'Bermain Kana Speed Match'],
+        'sentence_builder_complete'  => ['xp' => 20, 'daily_limit' => 8,  'label' => 'Menyelesaikan Game Susun Kalimat'],
+        'tanya_sensei_ask'           => ['xp' => 10, 'daily_limit' => 5,  'label' => 'Bertanya pada Tanya Sensei AI'],
     ];
 
     /**
@@ -37,7 +38,7 @@ class GamificationService
      *
      * @var array<int, string>
      */
-    public const CLIENT_ACTIONS = ['flashcard_session', 'writing_practice', 'conversation_complete', 'vocab_saved', 'speed_match_complete', 'tanya_sensei_ask'];
+    public const CLIENT_ACTIONS = ['flashcard_session', 'writing_practice', 'conversation_complete', 'vocab_saved', 'speed_match_complete', 'sentence_builder_complete', 'tanya_sensei_ask'];
 
     /**
      * Batas minimal XP per level.

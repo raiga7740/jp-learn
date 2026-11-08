@@ -21,6 +21,7 @@
             --muted: #9a6878;
             --line: #f0d5d0;
             --red: #c4102e;
+            --red-hover: #a00d25;
             --red-2: #e8234f;
             --red-soft: #fde8ec;
             --navy: #17143a;
@@ -1092,6 +1093,17 @@
             </span>
             Speed Match
         </a>
+        <a href="{{ route('sentence-builder.index') }}" class="nav-link {{ request()->routeIs('sentence-builder.*') ? 'active' : '' }}">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                    <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                    <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                    <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                </svg>
+            </span>
+            Susun Kalimat
+        </a>
         <a href="{{ route('jlpt.index') }}" class="nav-link {{ request()->routeIs('jlpt.*') ? 'active' : '' }}">
             <span class="nav-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1404,6 +1416,10 @@
             <a href="{{ route('speed-match.index') }}" class="{{ request()->routeIs('speed-match.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                 Speed Match
+            </a>
+            <a href="{{ route('sentence-builder.index') }}" class="{{ request()->routeIs('sentence-builder.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect></svg>
+                Susun Kalimat
             </a>
             <a href="{{ route('jlpt.index') }}" class="{{ request()->routeIs('jlpt.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>

@@ -39,6 +39,7 @@
 ### 2. Modul Pembelajaran Interaktif
 * **Materi Terstruktur:** Pembelajaran huruf Hiragana, Katakana, Kanji N5, Pola Kalimat/Grammar, dan Percakapan Tematik sehari-hari.
 * **Flashcard Interaktif:** Kartu bolak-balik (Kanji, Romaji, Arti, Contoh Kalimat) dengan sistem pelacak status hafalan.
+* **Game Susun Kalimat (Sentence Builder):** Game interaktif menyusun pola kalimat Jepang (SOV / Topik-Waktu-Objek-Predikat) dengan ubin sentuh (*tap-to-place*), ubin pengecoh (*distractor tiles*), pengucapan audio otomatis (Web Speech API), penjelasan tata bahasa, kombo streak, dan hadiah XP.
 * **Latihan Menulis Kana:** Canvas interaktif untuk melatih goresan (*stroke order*) huruf Hiragana dan Katakana secara visual.
 * **Speed Match Game:** Permainan mencocokkan kata Jepang dengan arti bahasa Indonesia berbasis batas waktu dan *leaderboard* skor.
 
